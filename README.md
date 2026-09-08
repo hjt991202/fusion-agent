@@ -2,7 +2,7 @@
 
 **An Agentic Workflow for Infrared and Visible Image Fusion**
 
-[中文说明](README_zh.md) · [Career notes](docs/CAREER_NOTES.md) · [Verification](docs/VERIFICATION.md)
+[中文说明](README_zh.md) · [Verification](docs/VERIFICATION.md)
 
 Upload a registered visible/infrared pair, compare CPU fusion baselines, inspect measured statistics,
 and export a traceable report. An optional OpenAI Agents SDK coordinator interprets task preferences
@@ -156,7 +156,7 @@ tests/             IO, algorithms, CLI, SDK and UI tests
 examples/          original synthetic images and generator
 scripts/           audit, experiment, analysis, verification
 .agents/skills/    four executable repository Skills
-docs/              progress, verification, career notes, demo artifacts
+docs/              progress, verification, model extension design, demo artifacts
 .github/workflows/ CI
 ```
 
@@ -171,7 +171,7 @@ Limitations: 8-bit grayscale, no registration/calibration, no learned models/tra
 benchmark, no reference metrics, single coordinator, heuristic recommendation.
 **Roadmap (not implemented):** PyTorch adapter via `FusionMethod`, licensed pretrained model
 evaluation, color reconstruction, registration and downstream-task metrics.
-See [extension design and interview notes](docs/CAREER_NOTES.md).
+See [model extension design](docs/MODEL_EXTENSION.md).
 
 [MIT License](LICENSE). Thanks to NumPy, OpenCV, PyWavelets, Pydantic, Gradio, OpenAI Agents SDK,
 Pytest and Ruff. References:

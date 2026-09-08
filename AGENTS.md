@@ -1,6 +1,6 @@
 # FusionAgent contributor instructions
 
-Build a truthful, reproducible infrared-visible fusion portfolio project.
+Build a truthful, reproducible infrared-visible fusion project.
 Read docs/IMPLEMENTATION_PLAN.md when resuming work.
 
 ## Layout and commands

@@ -1,6 +1,6 @@
 # FusionAgent：红外—可见光图像融合智能体系统
 
-[English](README.md) · [简历与面试材料](docs/CAREER_NOTES.md) · [验收记录](docs/VERIFICATION.md)
+[English](README.md) · [验收记录](docs/VERIFICATION.md)
 
 输入一对已配准的可见光和红外图像及任务描述，完成 CPU 融合、指标对比与可追踪报告。
 可选 OpenAI Agents SDK 协调器根据任务选择参数并调用工具；无 API 密钥也能运行完整流程。
@@ -136,7 +136,7 @@ tests/             IO、算法、CLI、SDK、UI 测试
 examples/          原创合成图与生成器
 scripts/           数据审计、实验、分析、验证
 .agents/skills/    四个可执行 Skills
-docs/              进度、验收、简历、面试、演示图
+docs/              进度、验收、模型扩展设计、演示图
 .github/workflows/ CI
 ```
 
@@ -148,7 +148,7 @@ docs/              进度、验收、简历、面试、演示图
 
 限制：8-bit 灰度，无几何配准、深度模型、训练、数据集基准或参考指标，单协调器、启发式推荐。
 **Roadmap（未实现）**：通过 FusionMethod 接入 PyTorch，评估授权预训练模型，颜色重建、真实
-配准与下游指标。接口方案见 [简历与面试材料](docs/CAREER_NOTES.md)。
+配准与下游指标。接口方案见 [模型扩展设计](docs/MODEL_EXTENSION.md)。
 
 [MIT 许可](LICENSE)。感谢 NumPy、OpenCV、PyWavelets、Pydantic、Gradio、OpenAI Agents SDK、
 Pytest 和 Ruff。官方参考见英文 README。

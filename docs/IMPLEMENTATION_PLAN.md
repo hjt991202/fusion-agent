@@ -15,7 +15,7 @@
 4. Complete: Gradio callback tested; local launch returned HTTP 200 and closed cleanly.
 5. Complete: four skills created, validated and actually executed.
 6. Local quality complete: 26 tests, Ruff format/lint, CLI and candidate audit pass.
-   Bilingual READMEs, actual comparison montage and career notes complete.
+   Bilingual READMEs, actual comparison montage and technical documentation complete.
    Published: https://github.com/hjt991202/fusion-agent (public, main).
    Remote CI passed on Linux with Python 3.10 and 3.12 for code commit a8b8922.
 
