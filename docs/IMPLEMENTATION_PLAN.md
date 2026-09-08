@@ -51,5 +51,7 @@ Browser automation timed out; Gradio tested by real HTTP startup and direct call
 - Hugging Face reports RUNNING, SDK static, no compute hardware requested.
   Live page: https://huggingface.co/spaces/hjt991202/fusion-agent
   Fullscreen: https://hjt991202-fusion-agent.static.hf.space/
-- Added live links, licensed public examples and complete browser deployment instructions.
-  Remaining: finish source synchronization and remote CI verification.
+- Complete: live links, licensed public examples and browser deployment instructions are on GitHub.
+  Code commit f63ff61 matches the uploaded web assets; remote CI passed on Python 3.10 and 3.12.
+  Git smart-HTTP was unavailable, so GitHub Git Data API published the identical verified commit
+  after validating both tree and commit SHA; no force update was used.

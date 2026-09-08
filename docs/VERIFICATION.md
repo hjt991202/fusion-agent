@@ -50,3 +50,5 @@ Final full verification results are saved locally in outputs/verification.json (
 - Anonymous HTTP checks confirm the hosted JavaScript, stylesheet and eight sample PNG hashes
   match the prepared package. Hosted index.html differs only by Hugging Face's injected platform
   variable script. Local static preview returned HTTP 200.
+- Remote CI passed for browser/data code commit f63ff61 on Python 3.10 and 3.12:
+  https://github.com/hjt991202/fusion-agent/actions/runs/34223914840 .
