@@ -16,7 +16,8 @@
 5. Complete: four skills created, validated and actually executed.
 6. Local quality complete: 26 tests, Ruff format/lint, CLI and candidate audit pass.
    Bilingual READMEs, actual comparison montage and career notes complete.
-   GitHub publication to hjt991202/fusion-agent in progress.
+   Published: https://github.com/hjt991202/fusion-agent (public, main).
+   Remote CI passed on Linux with Python 3.10 and 3.12 for code commit a8b8922.
 
 ## Environment
 Python 3.12.4. Portable official GitHub CLI installed under ignored outputs/tools.
@@ -25,7 +26,9 @@ The unrelated connector account HanJintan is not used for publication.
 Git requires per-command safe.directory because sandbox ownership differs.
 
 ## Next commands
-Commit verified candidates, create the new public repository, push main, inspect CI.
+All six stages and requested publication are complete. To demonstrate locally:
+`.venv/Scripts/python.exe app.py` on Windows, or activate .venv then `python app.py`.
+For future changes follow AGENTS.md and use project-verification before each commit.
 
 ## Known limits
 No live paid API call or real sensor benchmark. Offline SDK tests do not prove model access.

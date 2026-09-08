@@ -27,7 +27,9 @@ major-version bounds so platform/Python resolvers can select appropriate wheels.
 
 - No real API key/model call used; offline SDK tests cannot prove account access or model behavior.
 - No real sensor dataset, training, GPU benchmark or statistical quality comparison.
-- Remote CI status must be checked separately after publication.
+- Remote CI passed on Linux for Python 3.10 and 3.12, including dependency installation,
+  Ruff, Pytest and CLI: [verified run](https://github.com/hjt991202/fusion-agent/actions/runs/34219080965).
+  This run validates code commit a8b8922; the follow-up publication record changes only documentation.
 - Secret scan is heuristic, complemented by candidate-file review; no private research data used.
 
 Final full verification results are saved locally in outputs/verification.json (ignored by Git).
