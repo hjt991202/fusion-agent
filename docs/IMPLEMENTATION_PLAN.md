@@ -6,7 +6,7 @@
 - CPU grayscale baselines first. No claims of trained models or real sensor benchmarks.
 - Resizing is explicit and is not geometric registration.
 - Agent is optional; deterministic execution remains available without credentials.
-- Synthetic demonstration data only; no private research data.
+- Synthetic demonstrations plus three user-authorized CC BY 4.0 TNO pairs; no private research data.
 
 ## Stages
 1. Complete: packaging installed in isolated .venv; pip check passed.
@@ -34,3 +34,22 @@ For future changes follow AGENTS.md and use project-verification before each com
 No live paid API call or real sensor benchmark. Offline SDK tests do not prove model access.
 No deep model, training, geometric registration or reference metric is implemented.
 Browser automation timed out; Gradio tested by real HTTP startup and direct callbacks.
+
+## Online deployment update
+- User requested an online demonstration and redistributable public examples.
+- Three official TNO pairs imported with CC BY 4.0 attribution and source/output hashes; audit passed.
+- Gradio now offers clickable sample pairs. Hosted mode disables model calls, bounds queue size
+  and retains temporary run outputs for up to one hour before cleanup on a subsequent request.
+- User registered Hugging Face hjt991202 and completed official device authentication.
+- Deploy the unchanged Python algorithms using deployment/space_app.py and scripts/deploy_space.py.
+- Sites alternative was registered but never published; its metadata is retained only under ignored
+  outputs/deployment-notes. No browser implementation was created or published.
+- Gradio upload attempt returned HTTP 402: CPU Gradio/Docker creation requires PRO.
+  No paid resource was requested. User explicitly selected a free browser-compute demo.
+- Static browser implementation created in web/, uploaded to the user's static Hugging Face Space.
+  JavaScript/Python parity tests pass (weighted exact, Haar at most one level of roundoff).
+- Hugging Face reports RUNNING, SDK static, no compute hardware requested.
+  Live page: https://huggingface.co/spaces/hjt991202/fusion-agent
+  Fullscreen: https://hjt991202-fusion-agent.static.hf.space/
+- Added live links, licensed public examples and complete browser deployment instructions.
+  Remaining: finish source synchronization and remote CI verification.

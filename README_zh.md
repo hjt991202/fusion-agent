@@ -2,6 +2,16 @@
 
 [English](README.md) · [验收记录](docs/VERIFICATION.md)
 
+**[▶ 在线演示：点击即可试用](https://huggingface.co/spaces/hjt991202/fusion-agent)** ·
+[全屏打开](https://hjt991202-fusion-agent.static.hf.space/) ·
+[公开样例下载与来源](examples/tno/README.md)
+
+打开后选择样例，再点击“运行两种融合方法”。免费网页版在浏览器内计算，不需要登录或 API
+密钥，也不会把你的图片上传到服务器。支持两种算法、四项指标、PNG/报告下载及三对真实 TNO
+图片，不提供在线 Agent。下方本地 Gradio 使用 Python，在线版使用经过对照测试的 JavaScript；
+加权平均灰度计算与 Python 一致，Haar 浮点舍入可能相差 1 灰度级。浏览器解码和颜色转换也可能
+与 OpenCV 不同。见 [部署说明与范围](docs/DEPLOYMENT.md)。
+
 输入一对已配准的可见光和红外图像及任务描述，完成 CPU 融合、指标对比与可追踪报告。
 可选 OpenAI Agents SDK 协调器根据任务选择参数并调用工具；无 API 密钥也能运行完整流程。
 
@@ -134,17 +144,22 @@ python -m pytest -q
 src/fusion_agent/   schemas、workflow、cli、tools/、agents/、ui/
 tests/             IO、算法、CLI、SDK、UI 测试
 examples/          原创合成图与生成器
+examples/tno/      三对 CC BY 4.0 公开图像及署名
 scripts/           数据审计、实验、分析、验证
 .agents/skills/    四个可执行 Skills
 docs/              进度、验收、模型扩展设计、演示图
 .github/workflows/ CI
+web/               免费浏览器演示（HTML/CSS/JavaScript）
+deployment/        原版 Python Space 的可选入口
 ```
 
 ## 数据、局限与计划
 
-只分发原创合成图，适用 MIT；没有下载或分发外部数据集。公开数据从作者渠道获取并检查许可。
-不要提交真实简牍科研数据、权重或密钥；datasets、outputs 被 Git 忽略。像素限制在解码后检查，
-本项目是本地演示，不是面向不可信上传的多租户服务。
+原创合成图适用 MIT，另收录 TNO 官方公开数据集的三对图像，适用 **CC BY 4.0**；
+详见 [署名、许可与来源记录](examples/tno/README.md)。仅做 BMP 到 PNG 的无损转换，不修改像素。
+在 Gradio 中点击样例，再点 Run fusion 即可；也可从 examples/tno/visible/ 与 infrared/ 下载。
+三对样例不代表基准测试。请勿提交真实简牍科研数据、权重或密钥；datasets、outputs 被 Git 忽略。
+当前部署的静态演示只在浏览器内处理图片；若另行部署可选的 Python Space，图片才会发送到服务器。
 
 限制：8-bit 灰度，无几何配准、深度模型、训练、数据集基准或参考指标，单协调器、启发式推荐。
 **Roadmap（未实现）**：通过 FusionMethod 接入 PyTorch，评估授权预训练模型，颜色重建、真实

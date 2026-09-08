@@ -13,6 +13,9 @@ Read docs/IMPLEMENTATION_PLAN.md when resuming work.
   `python -m fusion_agent.cli --visible examples/visible.png --infrared examples/infrared.png`.
 - UI: `python app.py`. Test: `python -m pytest -q`.
 - Style: `python -m ruff check .` and `python -m ruff format --check .`.
+- web/: browser-only demo. After kernel changes run tests/test_browser_parity.py with Node installed.
+  Test JavaScript syntax with `node --check web/app.mjs` and `node --check web/fusion.mjs`.
+  The free public demo is a static Hugging Face Space; deployment instructions are in docs/DEPLOYMENT.md.
 
 ## Required workflows
 - After data changes use `$dataset-audit` at .agents/skills/dataset-audit/SKILL.md.
@@ -27,7 +30,8 @@ Read docs/IMPLEMENTATION_PLAN.md when resuming work.
 ## Standards and privacy
 English code/comments, typed core functions, Ruff, small modules, bilingual truthful READMEs.
 No keys in code/logs/Git. Environment variables only; .env.example contains no secrets.
-Never commit private research images, datasets, weights, caches or outputs. Do not alter source
-data during audits. Demo images are generated synthetic shapes, not sensor benchmarks.
+Never commit private research images, full datasets, weights, caches or outputs. Do not alter source
+data during audits. Bundled examples are synthetic shapes plus a small attributed CC BY 4.0 TNO
+subset. Preserve the TNO license, source manifest and pixel hashes; examples are not benchmarks.
 Resizing is explicit and is never described as registration. No single quality metric proves
 perceptual superiority. Public releases require user authorization.

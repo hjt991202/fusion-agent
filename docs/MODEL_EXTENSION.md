@@ -15,4 +15,3 @@ A future `TorchFusionMethod` should:
    selects only registered methods. Benchmark on licensed registered data with target-aware metrics.
 
 This release deliberately has no PyTorch dependency, training loop, neural checkpoint or adapter.
-

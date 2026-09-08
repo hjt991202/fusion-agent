@@ -2,6 +2,7 @@
 
 import json
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -36,7 +37,7 @@ def candidate_audit() -> list[str]:
         if path.suffix not in {".png", ".jpg"}:
             content = path.read_text(encoding="utf-8", errors="replace")
             if re.search(
-                r"(?:sk-[A-Za-z0-9_-]{24,}|gh[pousr]_[A-Za-z0-9]{25,}|"
+                r"(?:sk-[A-Za-z0-9_-]{24,}|gh[pousr]_[A-Za-z0-9]{25,}|hf_[A-Za-z0-9]{25,}|"
                 r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----)",
                 content,
             ):
@@ -78,6 +79,16 @@ def main() -> int:
             }
         )
     issues = candidate_audit()
+    if shutil.which("node"):
+        for source in ["web/app.mjs", "web/fusion.mjs"]:
+            result = subprocess.run(["node", "--check", source], capture_output=True, text=True)
+            checks.append(
+                {
+                    "command": ["node", "--check", source],
+                    "passed": result.returncode == 0,
+                    "output": result.stdout + result.stderr,
+                }
+            )
     report = {
         "checks": checks,
         "candidate_issues": issues,

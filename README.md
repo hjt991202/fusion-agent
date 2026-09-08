@@ -4,6 +4,18 @@
 
 [中文说明](README_zh.md) · [Verification](docs/VERIFICATION.md)
 
+**[▶ Open live demo](https://huggingface.co/spaces/hjt991202/fusion-agent)** ·
+[Direct fullscreen demo](https://hjt991202-fusion-agent.static.hf.space/) ·
+[Public sample images](examples/tno/README.md)
+
+Choose a sample, then click **Run fusion**. The free online version processes images entirely in
+your browser; no login, API key or image upload to a server is needed. It offers both algorithms,
+four metrics, PNG/report downloads and three real TNO pairs. It does not run the optional Agent.
+The local Gradio version below uses Python; the online version uses tested JavaScript kernels.
+Weighted fusion matches the Python grayscale kernel; Haar floating-point rounding can differ
+by one intensity level. Browser image decoding/color conversion can also differ from OpenCV.
+See [deployment and browser scope](docs/DEPLOYMENT.md).
+
 Upload a registered visible/infrared pair, compare CPU fusion baselines, inspect measured statistics,
 and export a traceable report. An optional OpenAI Agents SDK coordinator interprets task preferences
 and invokes bounded tools. The deterministic path works locally without an API key.
@@ -154,18 +166,24 @@ Offline SDK tests exercise real tool schemas/invocations, not live model availab
 src/fusion_agent/   schemas, workflow, cli, tools/, agents/, ui/
 tests/             IO, algorithms, CLI, SDK and UI tests
 examples/          original synthetic images and generator
+examples/tno/      three attributed CC BY 4.0 public image pairs
 scripts/           audit, experiment, analysis, verification
 .agents/skills/    four executable repository Skills
 docs/              progress, verification, model extension design, demo artifacts
 .github/workflows/ CI
+web/               free browser demo (HTML/CSS/JavaScript)
+deployment/        optional original Python Space entrypoint
 ```
 
 ## Data, limitations, roadmap and license
 
-Only original synthetic images are bundled under MIT. No external dataset is downloaded or
-redistributed. Get public datasets from authors and check their license. Private research images,
-datasets, outputs and weights must stay out of Git. Pixel limits are checked after decoding;
-this is a local demo, not a hardened multi-tenant upload service.
+Original synthetic images are bundled under MIT. Three pairs from the official TNO dataset are
+included under **CC BY 4.0**, with separate [attribution, license and provenance](examples/tno/README.md).
+They are losslessly converted from BMP to PNG without pixel edits. Choose a sample in Gradio,
+then click Run fusion. For manual download, open examples/tno/visible/ and examples/tno/infrared/.
+These selected samples are not a benchmark. Private images, full datasets, outputs and weights
+must stay out of Git. The deployed static demo processes images locally in the browser;
+the optional Python Space configuration would process uploads on a server if separately deployed.
 
 Limitations: 8-bit grayscale, no registration/calibration, no learned models/training, no dataset
 benchmark, no reference metrics, single coordinator, heuristic recommendation.

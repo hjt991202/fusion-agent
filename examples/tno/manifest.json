@@ -1,0 +1,121 @@
+{
+  "dataset": "TNO Image Fusion Dataset",
+  "author": "Alexander Toet",
+  "owner": "TNO, Soesterberg, The Netherlands",
+  "doi": "https://doi.org/10.6084/m9.figshare.1008029.v2",
+  "download": "https://ndownloader.figshare.com/files/1475454",
+  "archive_md5": "1ab9ce3b84dd3e5894630c13abd20953",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "changes": "Lossless BMP-to-PNG re-encoding and descriptive filenames; no pixel edits.",
+  "pairs": [
+    {
+      "name": "lake",
+      "visible": {
+        "file": "visible/lake.png",
+        "source_member": "TNO_Image_Fusion_Dataset/Athena_images/lake/VIS_lake_r.bmp",
+        "source_sha256": "d1f7dd4e2383aa9f6e9fef332d87382f65fff4bfab4134fef964cddd59c85f42",
+        "sha256": "3449799f7c03ec279a293b0265525ef51250f2ebe2b5b24718af40a290d37e0c"
+      },
+      "infrared": {
+        "file": "infrared/lake.png",
+        "source_member": "TNO_Image_Fusion_Dataset/Athena_images/lake/IR_lake_g.bmp",
+        "source_sha256": "173a0352451b411127942ef15dd04801a7d6e3967eccee8d8454860b160c6a08",
+        "sha256": "e73ede1d07f9a038aebbb8beca811d079fc632256224c7d27d2a821f67200eea"
+      },
+      "inspection": {
+        "visible": {
+          "name": "lake.png",
+          "width": 768,
+          "height": 576,
+          "channels": 1,
+          "dtype": "uint8",
+          "sha256": "3449799f7c03ec279a293b0265525ef51250f2ebe2b5b24718af40a290d37e0c",
+          "warnings": []
+        },
+        "infrared": {
+          "name": "lake.png",
+          "width": 768,
+          "height": 576,
+          "channels": 1,
+          "dtype": "uint8",
+          "sha256": "e73ede1d07f9a038aebbb8beca811d079fc632256224c7d27d2a821f67200eea",
+          "warnings": []
+        },
+        "same_size": true
+      }
+    },
+    {
+      "name": "helicopter",
+      "visible": {
+        "file": "visible/helicopter.png",
+        "source_member": "TNO_Image_Fusion_Dataset/Athena_images/helicopter/VIS_helib_011.bmp",
+        "source_sha256": "18372d20b6f618e28d65eab12624625952057618c139079573dc828749d645b1",
+        "sha256": "a17fdbe436e163bc9fcdff4ed2f41d50607a3599ba2e6bc607dc41841725f253"
+      },
+      "infrared": {
+        "file": "infrared/helicopter.png",
+        "source_member": "TNO_Image_Fusion_Dataset/Athena_images/helicopter/IR_helib_011.bmp",
+        "source_sha256": "12838f3423701461dd8912b3856f3f9e2d2ddafbe28e23c127d681f9e29b06c6",
+        "sha256": "88550be5fd776971279ee1b2c49fcc9d74bf4c66952d4d1dfb6e7d9e357b7f44"
+      },
+      "inspection": {
+        "visible": {
+          "name": "helicopter.png",
+          "width": 359,
+          "height": 247,
+          "channels": 1,
+          "dtype": "uint8",
+          "sha256": "a17fdbe436e163bc9fcdff4ed2f41d50607a3599ba2e6bc607dc41841725f253",
+          "warnings": []
+        },
+        "infrared": {
+          "name": "helicopter.png",
+          "width": 359,
+          "height": 247,
+          "channels": 1,
+          "dtype": "uint8",
+          "sha256": "88550be5fd776971279ee1b2c49fcc9d74bf4c66952d4d1dfb6e7d9e357b7f44",
+          "warnings": []
+        },
+        "same_size": true
+      }
+    },
+    {
+      "name": "house",
+      "visible": {
+        "file": "visible/house.png",
+        "source_member": "TNO_Image_Fusion_Dataset/Athena_images/2_men_in_front_of_house/VIS_meting003_r.bmp",
+        "source_sha256": "0eaf2baebbcc1b2f1de3014e9e825661e462075e20bc57732f5ddb9c3f64beb8",
+        "sha256": "679566336a1f3ad947f335fb8d9164f6aec4c609ecf37f6751cd0acfb3cdfc20"
+      },
+      "infrared": {
+        "file": "infrared/house.png",
+        "source_member": "TNO_Image_Fusion_Dataset/Athena_images/2_men_in_front_of_house/IR_meting003_g.bmp",
+        "source_sha256": "d0afebd61208256f98ffbd755d3a56b31d9a41dc2565c60dd724773753098c68",
+        "sha256": "55bd1bfe902fd07676165a463ebe807c41ee832e0d0044479caf420c763e4cc1"
+      },
+      "inspection": {
+        "visible": {
+          "name": "house.png",
+          "width": 768,
+          "height": 576,
+          "channels": 1,
+          "dtype": "uint8",
+          "sha256": "679566336a1f3ad947f335fb8d9164f6aec4c609ecf37f6751cd0acfb3cdfc20",
+          "warnings": []
+        },
+        "infrared": {
+          "name": "house.png",
+          "width": 768,
+          "height": 576,
+          "channels": 1,
+          "dtype": "uint8",
+          "sha256": "55bd1bfe902fd07676165a463ebe807c41ee832e0d0044479caf420c763e4cc1",
+          "warnings": []
+        },
+        "same_size": true
+      }
+    }
+  ]
+}

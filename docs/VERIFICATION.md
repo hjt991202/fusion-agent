@@ -33,3 +33,20 @@ major-version bounds so platform/Python resolvers can select appropriate wheels.
 - Secret scan is heuristic, complemented by candidate-file review; no private research data used.
 
 Final full verification results are saved locally in outputs/verification.json (ignored by Git).
+
+## Public examples and deployment preparation
+
+- TNO official archive MD5 matched figshare. Three pairs imported with unchanged decoded pixels,
+  CC BY 4.0 attribution and a source/output SHA256 manifest; dataset-audit found no issues.
+- Updated local suite: 29 tests passed, including TNO provenance, public Agent rejection and
+  a full public callback using a real sample. Ruff and the full verification script passed.
+- CPU Gradio Space creation returned HTTP 402 (PRO required); this is a provider account
+  restriction, not a successful online deployment. No paid resource was created.
+- User chose the free static browser alternative. Hugging Face reports RUNNING with SDK static
+  and no compute hardware: https://huggingface.co/spaces/hjt991202/fusion-agent .
+- 32 local tests pass, including browser/Python parity across even/odd images. Weighted outputs
+  match exactly; Haar tolerance is one grayscale level; metrics match on identical image arrays.
+- JavaScript syntax checks pass. This does not claim pixel-identical browser/OpenCV color decoding.
+- Anonymous HTTP checks confirm the hosted JavaScript, stylesheet and eight sample PNG hashes
+  match the prepared package. Hosted index.html differs only by Hugging Face's injected platform
+  variable script. Local static preview returned HTTP 200.
