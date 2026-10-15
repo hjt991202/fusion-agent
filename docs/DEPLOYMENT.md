@@ -18,8 +18,8 @@ Publication verifies the Hugging Face owner and the Space SDK type. The allowlis
 web source files, the code license, attributed TNO/synthetic examples, 15 explicitly authorized
 Jiandu RGB/IR/Y triplets and their measured preview plates/manifests. Source hashes and matching
 sample IDs are checked before staging. No API tokens, checkpoints, full test dataset or raw run
-folders are copied. Publishing the new Jiandu material to a second host requires authorization
-for that destination; preparing a local stage does not publish it.
+folders are copied. The project owner explicitly authorized publishing the selected Jiandu
+examples and precomputed results to this existing Hugging Face Space on 2026-10-15.
 The earlier Sites alternative remained unpublished; the chosen deployment uses the user's Space.
 
 Browser scope: same-size pairs, weighted average and one-level symmetric Haar, four metrics,

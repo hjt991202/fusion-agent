@@ -47,14 +47,16 @@ The earlier browser-automation limitation was resolved during the Jiandu update 
 - Ran all four methods on all 15 original-resolution pairs. Recomputed all 60 metric records
   from actual output PNGs; curated preview plates, shared center crops and evidence are included.
 - Exact CPU pixel parity against original-code reruns: ICIG two pairs; letters one masked pair.
-- Full local project verification passed: 115 tests, Ruff lint/format, CLI, three JS syntax checks,
+- Full local project verification passed: 116 tests, Ruff lint/format, CLI, three JS syntax checks,
   browser/Python kernel parity and candidate audit. Original torch.qr deprecation is retained.
+- Updated SDK error handling explicitly preserves fixed plan-constraint messages across SDK
+  versions while redacting unexpected IO/provider errors. Offline tool tests cover both cases.
 - Gradio was exercised through a real browser on sample 517 with both research methods and
   prepared VIS_Y; its metrics matched the batch. Static page loaded the 15-pair gallery and
   ran baselines on sample 843 with no browser errors. Local stage contains 80 allowlisted files.
 - Reproduction and measured interpretation: docs/RESEARCH_METHODS.md and docs/JIANDU_RESULTS.md.
-  Publication to GitHub is authorized by the current user request; publishing new images to the
-  existing Hugging Face Space is a separate optional destination decision.
+  Published the integration to GitHub as 3e5cdbb. The user also explicitly authorized synchronizing
+  the 15 selected examples and precomputed results to the existing Hugging Face Space.
 
 ## Online deployment update
 - User requested an online demonstration and redistributable public examples.

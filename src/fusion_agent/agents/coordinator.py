@@ -17,6 +17,17 @@ class AgentConclusion(Contract):
     limitations: list[str]
 
 
+class PlanConstraintError(ValueError):
+    """A fixed, public message about the bounded tool execution contract."""
+
+
+def tool_failure_message(context: object, error: Exception) -> str:
+    """Expose only known plan guards; never send arbitrary IO/provider errors to the model."""
+    if isinstance(error, PlanConstraintError):
+        return str(error)
+    return "Local tool execution failed. Check the inputs or run without Agent mode."
+
+
 def build_agent(
     visible: str | Path,
     infrared: str | Path,
@@ -29,7 +40,7 @@ def build_agent(
 
     state: dict = {"report": None, "records": [], "inspected": False}
 
-    @function_tool
+    @function_tool(failure_error_function=tool_failure_message)
     def inspect_inputs() -> str:
         """Inspect the selected image pair before planning. Does not transmit image pixels."""
         start = time.perf_counter()
@@ -44,17 +55,17 @@ def build_agent(
         state["inspected"] = True
         return pair.model_dump_json()
 
-    @function_tool
+    @function_tool(failure_error_function=tool_failure_message)
     def execute_fusion(plan: FusionPlan) -> str:
         """Execute one plan, calculate metrics and generate a report. Inspect inputs first."""
         if not state["inspected"]:
-            raise ValueError("Call inspect_inputs before execute_fusion.")
+            raise PlanConstraintError("Call inspect_inputs before execute_fusion.")
         if state["report"] is not None:
-            raise ValueError("Only one experiment is allowed per agent run.")
+            raise PlanConstraintError("Only one experiment is allowed per agent run.")
         if not set(plan.methods).issubset(constraints.methods):
-            raise ValueError("Plan methods exceed the user-selected methods.")
+            raise PlanConstraintError("Plan methods exceed the user-selected methods.")
         if plan.resize and not constraints.resize:
-            raise ValueError("Resizing requires the user --resize option.")
+            raise PlanConstraintError("Resizing requires the user --resize option.")
         state["records"].append(
             ToolRecord(
                 tool="agent.execute_fusion",

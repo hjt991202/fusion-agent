@@ -79,3 +79,15 @@ def test_agent_method_and_resize_guards(tmp_path):
         assert state["report"] is None
 
     asyncio.run(exercise())
+
+
+def test_agent_error_messages_do_not_expose_unexpected_details():
+    from fusion_agent.agents.coordinator import PlanConstraintError, tool_failure_message
+
+    assert "inspect_inputs" in tool_failure_message(
+        None, PlanConstraintError("Call inspect_inputs before execute_fusion.")
+    )
+    for error in [ValueError("private-input-path"), RuntimeError("provider-private-payload")]:
+        message = tool_failure_message(None, error)
+        assert str(error) not in message
+        assert "Local tool execution failed" in message
