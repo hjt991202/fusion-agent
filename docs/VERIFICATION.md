@@ -2,7 +2,7 @@
 
 ## Jiandu integration — 2026-10-15
 
-- Full project-verification passed: **115 tests passed**, no skips with the local ICIG checkpoint
+- Full project-verification passed: **116 tests passed**, no skips with the local ICIG checkpoint
   enabled; Ruff lint/format, README CLI, three JavaScript syntax checks and candidate audit pass.
   One warning is the original ICIG `torch.qr` deprecation retained for archive parity.
 - Optional model contracts include identity-input/constant/odd-size execution, finite outputs,
@@ -26,6 +26,17 @@
 - CI includes separate research contracts with CPU PyTorch and small explicitly untrained test
   fixtures. Public CI does not contain the owner's checkpoints; trained-checkpoint parity is local.
   No GPU, training, recognition-quality benchmark, validated registration or live paid API call.
+- Explicit SDK tool error handling preserves fixed plan-constraint messages and redacts arbitrary
+  IO/provider exception text. Existing guard tests and the added redaction regression pass.
+- GitHub CI passed for code commit `be5b72c`: Python 3.10, Python 3.12 and research contracts.
+  [Verified run](https://github.com/hjt991202/fusion-agent/actions/runs/38681680529).
+- With explicit owner approval, the existing free static Space was updated to
+  [commit a0f2b7f](https://huggingface.co/spaces/hjt991202/fusion-agent/commit/a0f2b7f72aa3f76b08faf82e859f67c8cff55dc9).
+  Its runtime is RUNNING. Anonymous verification matched all 80 package file hashes to the Space
+  repository and all 79 served files to the stage, removing only the platform-injected script
+  from index.html. The generated Space README is checked through the repository.
+- The live browser shows all 15 choices, previews and four-method metric tables; switching from
+  sample 843 to 517 updates the image, metrics and original-source links correctly.
 
 The following sections preserve the earlier project's historical verification record.
 

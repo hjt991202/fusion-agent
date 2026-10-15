@@ -12,8 +12,8 @@
 [Original Jiandu samples](examples/jiandu/README.md) · [Local model setup](docs/RESEARCH_METHODS.md)
 
 Choose a sample, then click **Run fusion**. The free online version processes images entirely in
-your browser; no login, API key or image upload to a server is needed. It offers both algorithms,
-four metrics, PNG/report downloads and three real TNO pairs. The repository's expanded showcase adds
+your browser; no login, API key or image upload to a server is needed. It offers weighted/Haar baselines,
+four metrics, PNG/report downloads and three real TNO pairs. The live showcase also includes
 15 Jiandu sample pairs and **precomputed** ICIG/letters results; neural inference runs locally
 through Python. It does not run the optional Agent.
 The local Gradio version below uses Python; the online version uses tested JavaScript kernels.
@@ -28,8 +28,8 @@ and invokes bounded tools. The deterministic path works locally without an API k
 ![Measured Jiandu 843: visible, infrared, ICIG color and letters color](docs/assets/jiandu/jiandu_0843.png)
 
 Actual outputs from the supplied checkpoints, with shared center crops. This selected example
-does not establish general quality or training/test independence. The source repository includes
-the expanded static showcase; updating the hosted Space is a separate publication step.
+does not establish general quality or training/test independence. All 15 comparisons are available
+in the repository and the updated live Hugging Face demo.
 
 ![Actual results on original synthetic inputs](docs/assets/demo-comparison.png)
 

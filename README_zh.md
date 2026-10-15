@@ -9,9 +9,9 @@
 **[▶ 查看 15 对简牍实测对比：ICIG + letters](docs/JIANDU_RESULTS.md)** ·
 [简牍原图与来源](examples/jiandu/README.md) · [本地模型安装](docs/RESEARCH_METHODS.md)
 
-打开后选择样例，再点击“运行两种融合方法”。免费网页版在浏览器内计算，不需要登录或 API
-密钥，也不会把你的图片上传到服务器。支持两种算法、四项指标、PNG/报告下载及三对真实 TNO
-图片。仓库新增的简牍展示区包含 15 对原图和 ICIG、letters 的**预计算实测结果**；深度模型在本地
+打开后选择样例，再点击“运行两种浏览器基线”。免费网页版在浏览器内计算，不需要登录或 API
+密钥，也不会把你的图片上传到服务器。支持加权平均与 Haar 小波、四项指标、PNG/报告下载及三对真实 TNO
+图片。在线简牍展示区包含 15 对原图和 ICIG、letters 的**预计算实测结果**；深度模型在本地
 Python 中运行，不提供在线 Agent。下方本地 Gradio 使用 Python，在线版基础算法使用 JavaScript；
 加权平均灰度计算与 Python 一致，Haar 浮点舍入可能相差 1 灰度级。浏览器解码和颜色转换也可能
 与 OpenCV 不同。见 [部署说明与范围](docs/DEPLOYMENT.md)。
@@ -21,8 +21,8 @@ Python 中运行，不提供在线 Agent。下方本地 Gradio 使用 Python，�
 
 ![简牍 843 实测：可见光、红外、ICIG 彩色与 letters 彩色及同位置细节](docs/assets/jiandu/jiandu_0843.png)
 
-图中是作者所提供权重的实际输出，不代表总体质量结论或独立测试集结果。仓库包含新版静态
-展示页面；已托管的 Hugging Face 页面需要另外同步发布。
+图中是作者所提供权重的实际输出，不代表总体质量结论或独立测试集结果。全部 15 对对比图
+已同步到 GitHub 仓库和 Hugging Face 在线演示。
 
 ![实际算法在原创合成样例上的输出](docs/assets/demo-comparison.png)
 

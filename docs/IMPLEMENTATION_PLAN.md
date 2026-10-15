@@ -57,6 +57,9 @@ The earlier browser-automation limitation was resolved during the Jiandu update 
 - Reproduction and measured interpretation: docs/RESEARCH_METHODS.md and docs/JIANDU_RESULTS.md.
   Published the integration to GitHub as 3e5cdbb. The user also explicitly authorized synchronizing
   the 15 selected examples and precomputed results to the existing Hugging Face Space.
+- Complete: code commit be5b72c passed all three remote CI jobs. The existing free static Space
+  is RUNNING at a0f2b7f; 80 repository files and 79 served files match the reviewed package.
+  Live browser verification confirmed the 15-pair gallery and switching between 843 and 517.
 
 ## Online deployment update
 - User requested an online demonstration and redistributable public examples.
