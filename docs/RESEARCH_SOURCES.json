@@ -1,0 +1,129 @@
+{
+  "source": "Owner-supplied archives for requested FusionAgent integration",
+  "publication_scope": "Adapted inference code, 15 selected test RGB/IR/Y triplets and measured documentation previews. Archives, checkpoints and full dataset are excluded.",
+  "license_note": "No separate archive code or dataset license was supplied. Existing third-party rights are not replaced by the project MIT license.",
+  "archives": [
+    {
+      "archive": "ICIGCode.zip",
+      "sha256": "183852d60d5bff38da3703dee463e61c20bfb9ee07b7b63d29540bc369c8b4e3",
+      "files": [
+        {
+          "path": "ICIGCode/args_fusion.py",
+          "bytes": 33,
+          "sha256": "6ae5b3b78d2f78889122c62a77a24b30fd3173759fd053f105b86b985629c39e"
+        },
+        {
+          "path": "ICIGCode/GmSa/grassmann.py",
+          "bytes": 4056,
+          "sha256": "4e87930d8895761a6d6b38c72fe142e99d9dad54999b76b9e8e2e40a9f031ae3"
+        },
+        {
+          "path": "ICIGCode/GmSa/GSMA.py",
+          "bytes": 6316,
+          "sha256": "62374f81efeba2eb937230aa74d9e9dd5b3ce8c53552cd72a542e7f7ac20f998"
+        },
+        {
+          "path": "ICIGCode/GmSa/__init__.py",
+          "bytes": 2,
+          "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+        },
+        {
+          "path": "ICIGCode/infer.py",
+          "bytes": 9685,
+          "sha256": "b9a9044227c4617046fec4beb71f89e0c7a31210da81429cb20541d2010f965d"
+        },
+        {
+          "path": "ICIGCode/net_sparse_v3.py",
+          "bytes": 42100,
+          "sha256": "528b7c21cf80af97d2b262b1f01ab423fd0cad2a17c508fdac790a945e3393d7"
+        },
+        {
+          "path": "ICIGCode/weights/model.pth",
+          "bytes": 6004474,
+          "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        }
+      ]
+    },
+    {
+      "archive": "lettersCode.zip",
+      "sha256": "c08030e58241d4779cbee57dc185edb0f6ca79a06b2ac6fe2bdd8a72fdda1cb9",
+      "files": [
+        {
+          "path": "letters/boundary_engine.py",
+          "bytes": 4000,
+          "sha256": "d2b04bd1fa5440b887fd691510bb88e40ccd9bd74b8ac686ea0e83939f38f4f6"
+        },
+        {
+          "path": "letters/color_transfer.py",
+          "bytes": 826,
+          "sha256": "edcab1cdd50f27afc0e9c2a74d8c91dc0b8fc5af6bad7abf99eff79eb0ae98f3"
+        },
+        {
+          "path": "letters/config.json",
+          "bytes": 740,
+          "sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f"
+        },
+        {
+          "path": "letters/contour_core.py",
+          "bytes": 3499,
+          "sha256": "1ab5eb5ab8816a739fde49f4508b246cb2b9d10fd5aa38db00a02d3501d202c9"
+        },
+        {
+          "path": "letters/infer.py",
+          "bytes": 5741,
+          "sha256": "74d6c0efad56e06587d6f34744868ecd49c61f0596b94d190b6defb4bab90802"
+        },
+        {
+          "path": "letters/jdfusion/architecture.py",
+          "bytes": 8611,
+          "sha256": "91ba44f5da66e52c0b1e0a0942846ed471d726f98bfb3b6e4de9e364dc1360ab"
+        },
+        {
+          "path": "letters/jdfusion/flow.py",
+          "bytes": 2836,
+          "sha256": "842ff8e84167f06769ff6aea0f0076e0342bcf0c1d49186bd052df8c39322054"
+        },
+        {
+          "path": "letters/jdfusion/__init__.py",
+          "bytes": 6,
+          "sha256": "e0ba8b72f361b6f4f71dc78a0b7a570475bdd44e176caad604ba134208475403"
+        },
+        {
+          "path": "letters/local_boundary.py",
+          "bytes": 1117,
+          "sha256": "f0762a08579ee9df4e513750decb9161bb2560fab93c91b012590f66cbfe32d5"
+        },
+        {
+          "path": "letters/masked_context.py",
+          "bytes": 4293,
+          "sha256": "1a3d8b6d6f4972b0437a28f90ea73f05c258f5bd034b1051bf8bfb9235d820a6"
+        },
+        {
+          "path": "letters/refinement.py",
+          "bytes": 3330,
+          "sha256": "804c68706673e41fcd57df5ba752e50d6aba8aa04a5467af5051bce948f4b5b7"
+        },
+        {
+          "path": "letters/refine_extended.py",
+          "bytes": 1731,
+          "sha256": "805cf77f5ce50bc2f47adaf92585543f50f0a16d3d91a1beca86a98dd57f60b6"
+        },
+        {
+          "path": "letters/source_restore.py",
+          "bytes": 1541,
+          "sha256": "a372a76796c459fcda49dbfe385ed9b08518eb3b982fcc9e97422179cf257781"
+        },
+        {
+          "path": "letters/transverse.py",
+          "bytes": 850,
+          "sha256": "818cfbe25204e38150a02bf2cce4a2b391e51263cd46799ecd46eb2ad8214521"
+        },
+        {
+          "path": "letters/weights/fusion.pt",
+          "bytes": 2258989,
+          "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ]
+    }
+  ]
+}

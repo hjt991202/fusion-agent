@@ -1,0 +1,90 @@
+{
+  "scope": "Full CPU inference parity with original archive pipeline; not a quality benchmark.",
+  "shape": [
+    2779,
+    353,
+    3
+  ],
+  "versions": {
+    "python": "3.12.4",
+    "numpy": "2.2.6",
+    "torch": "2.7.1+cpu",
+    "scipy": "1.13.1",
+    "opencv": "4.14.0"
+  },
+  "adapted_seconds": 10.320345799991628,
+  "original_seconds": 10.55895320000127,
+  "adapted_vs_rerun_original": {
+    "exact_equal": true,
+    "max_absolute_difference": 0,
+    "mean_absolute_difference": 0.0,
+    "different_pixels": 0
+  },
+  "adapted_vs_bundled_example_result": {
+    "exact_equal": false,
+    "max_absolute_difference": 1,
+    "mean_absolute_difference": 2.0387630009368116e-06,
+    "different_pixels": 2
+  },
+  "metadata": {
+    "implementation": "letters_idrnet_with_boundary_refinement",
+    "weights_name": "fusion.pt",
+    "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+    "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+    "model_config": {
+      "base_channels": 32,
+      "flow_channels": 64
+    },
+    "device": "cpu",
+    "torch_threads": 2,
+    "input_color_order": "RGB",
+    "output_gray_conversion": "Pillow RGB to L",
+    "material_source": "visible_color",
+    "valid_pixels": 941670,
+    "material_pixels": 650185,
+    "learned_flow_enabled": true,
+    "refinement": {
+      "anchor": {
+        "ink_threshold": 0.42,
+        "ink_blur": 5,
+        "ink_gain": 0.22,
+        "ink_darken": 0.035,
+        "ink_gamma": 0.0,
+        "bg_rgb_keep": 0.85,
+        "chroma_from_rgb": 1.0
+      },
+      "refinement": {
+        "gamma": 1.5,
+        "neutral": 0.3
+      },
+      "boundary_protection": {
+        "width_at256": 16,
+        "strength": 1.0
+      },
+      "transverse_reference": {
+        "mode": "soft",
+        "width": 16
+      },
+      "masked_context": {
+        "width": 16,
+        "strength": 1.0
+      },
+      "color_transfer": {
+        "mode": "VIS_RGB_chroma_at_fused_luma",
+        "scope": "all_observed_material",
+        "integer_gray_lock": [
+          "PIL",
+          "OpenCV"
+        ],
+        "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+      }
+    },
+    "flow_mean_pixels": 0.6746553182601929,
+    "flow_p95_pixels": 0.6760895848274231
+  },
+  "input_hashes": {
+    "examples\\IR\\001.png": "6c45a52c2550310a1538e98ff1cd3afb8dde801374798e4b7b350c19767f093d",
+    "examples\\valid\\001.png": "48875382a21489ed312c9afa3f346a6d0aab73eda6c5c71f742437efcd412919",
+    "examples\\VIS_RGB\\001.png": "9edd998c97c5edf4f53994f83d16c3a9745a83f3cdd60fc9e8bf80c1f81525da"
+  }
+}

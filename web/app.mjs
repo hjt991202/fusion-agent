@@ -1,4 +1,5 @@
 import {runFusion} from './fusion.mjs';
+import {initializeShowcase} from './showcase.mjs';
 const $=id=>document.getElementById(id), state={visible:null,infrared:null}, urls={};
 let busy=false, generation=0, report='';
 function status(message,error=false){$('status').textContent=message;$('status').classList.toggle('error',error);}
@@ -6,6 +7,7 @@ function invalidate(){generation++;report='';$('results').hidden=true;}
 function enable(){
   $('run').disabled=busy||!state.visible||!state.infrared;
   document.querySelectorAll('.sample,input').forEach(element=>{element.disabled=busy;});
+  $('showcase-load').disabled=busy||!$('showcase-load').dataset.ready;
 }
 function release(key){if(urls[key])URL.revokeObjectURL(urls[key]);}
 async function decode(blob,name){
@@ -35,22 +37,29 @@ for(const key of ['visible','infrared'])$(key+'-file').addEventListener('change'
   catch(error){if(ticket===generation){state[key]=null;$(key+'-preview').hidden=true;$(key+'-empty').hidden=false;$(key+'-info').textContent='读取失败';status(error.message,true);}}
   finally{if(ticket===generation){busy=false;enable();}}
 });
-for(const button of document.querySelectorAll('[data-sample]'))button.addEventListener('click',async()=>{
+async function loadRemotePair(name,paths,button=null){
+  if(busy)return false;
   invalidate();const ticket=generation;busy=true;enable();status('正在载入样例…');
-  const name=button.dataset.sample;
   try{
     const images=await Promise.all(['visible','infrared'].map(async key=>{
-      const path=name==='synthetic'?`samples/${key}.png`:`samples/tno/${key}/${name}.png`;
-      const response=await fetch(path);if(!response.ok)throw Error('样例加载失败，请重试。');
+      const response=await fetch(paths[key]);if(!response.ok)throw Error('样例加载失败，请重试。');
       return decode(await response.blob(),`${name}-${key}.png`);
     }));
     if(ticket!==generation)return;
     showInput('visible',images[0]);showInput('infrared',images[1]);
     document.querySelectorAll('.sample').forEach(el=>el.classList.toggle('selected',el===button));
-    status('样例已载入，点击“运行两种融合方法”。');
-  }catch(error){if(ticket===generation)status(error.message,true);}
+    status('原图已载入，点击“运行两种浏览器基线”。');
+    return true;
+  }catch(error){if(ticket===generation)status(error.message,true);return false;}
   finally{if(ticket===generation){busy=false;enable();}}
+}
+for(const button of document.querySelectorAll('[data-sample]'))button.addEventListener('click',()=>{
+  const name=button.dataset.sample;
+  const paths=Object.fromEntries(['visible','infrared'].map(key=>[key,
+    name==='synthetic'?`samples/${key}.png`:`samples/tno/${key}/${name}.png`]));
+  return loadRemotePair(name,paths,button);
 });
+initializeShowcase({loadPair:loadRemotePair});
 $('weight').addEventListener('input',()=>{$('weight-value').textContent=Number($('weight').value).toFixed(2);invalidate();});
 $('task').addEventListener('input',invalidate);
 function renderImage(name,image){
@@ -80,7 +89,8 @@ $('run').addEventListener('click',async()=>{
     report=[...lines,'','## Recommendation',explanation,'','## Executed tools',JSON.stringify(out.trace,null,2),'','## Limits',
       'Browser decoding and grayscale conversion may differ from OpenCV. Haar roundoff may differ by 1 intensity level. No model, registration or reference metrics.',
       'Task text is a note only. Processing is local to this browser. Higher metrics do not prove quality.',
-      'TNO examples: Alexander Toet / TNO, CC BY 4.0, https://doi.org/10.6084/m9.figshare.1008029.v2'].join('\n');
+      'TNO examples: Alexander Toet / TNO, CC BY 4.0, https://doi.org/10.6084/m9.figshare.1008029.v2',
+      'Jiandu examples: owner-provided project demonstration; no general redistribution license supplied. See samples/jiandu/README.md and manifest.json.'].join('\n');
     $('results').hidden=false;status(`完成 · ${(performance.now()-start).toFixed(0)} ms · 图片未上传到服务器`);
   }catch(error){$('results').hidden=true;status(error.message,true);}
   finally{busy=false;enable();}

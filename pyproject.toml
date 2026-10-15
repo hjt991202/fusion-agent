@@ -13,12 +13,16 @@ dependencies = ["numpy>=1.26,<3", "opencv-python-headless>=4.9,<5", "PyWavelets>
 dev = ["pytest>=8,<10", "ruff>=0.9,<1"]
 ui = ["gradio>=5,<7"]
 agent = ["openai-agents>=0.2,<1"]
+research = ["torch>=2.5,<3", "scipy>=1.13,<2", "einops>=0.8,<1", "Pillow>=11,<13"]
 
 [project.scripts]
 fusion-agent = "fusion_agent.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"fusion_agent.models.letters" = ["config.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

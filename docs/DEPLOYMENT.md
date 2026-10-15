@@ -14,12 +14,19 @@ python -m http.server 7863 --bind 127.0.0.1 --directory outputs/static-release-N
 python scripts/deploy_static_space.py --stage outputs/static-release-NEXT --repo hjt991202/fusion-agent --publish
 ```
 
-Publication verifies the Hugging Face owner and the Space SDK type. Only the four web source
-files, MIT code license and attributed samples are uploaded. No API tokens or local results are copied.
+Publication verifies the Hugging Face owner and the Space SDK type. The allowlist contains five
+web source files, the code license, attributed TNO/synthetic examples, 15 explicitly authorized
+Jiandu RGB/IR/Y triplets and their measured preview plates/manifests. Source hashes and matching
+sample IDs are checked before staging. No API tokens, checkpoints, full test dataset or raw run
+folders are copied. Publishing the new Jiandu material to a second host requires authorization
+for that destination; preparing a local stage does not publish it.
 The earlier Sites alternative remained unpublished; the chosen deployment uses the user's Space.
 
 Browser scope: same-size pairs, weighted average and one-level symmetric Haar, four metrics,
-task notes, input hashes, tool timings, PNG and report downloads. No online Agent or resizing.
+task notes, input hashes, tool timings, PNG and report downloads. The expanded source also shows
+15 precomputed ICIG/letters comparisons with full-resolution measurements and shared crops.
+Selecting a Jiandu example can load its original RGB/IR into browser baselines. Neither learned
+model runs in the static browser. No online Agent or resizing.
 PNG/JPEG/BMP/WebP up to 16 MiB and four million pixels. Transparent images are rejected;
 convert high-bit-depth input to 8-bit explicitly before use. Canvas color/decoding may differ
 from OpenCV. Tests compare grayscale kernels: weighted output is exact, Haar output may differ
@@ -59,7 +66,10 @@ impose account eligibility or plan requirements; the script never buys a plan.
 
 ## Runtime behavior
 
-- Four clickable examples: three attributed TNO pairs and one synthetic pair.
+- Nineteen clickable local examples: three TNO, one synthetic and fifteen Jiandu pairs.
+- Local Jiandu examples also load their prepared VIS_Y and clear previous masks.
+- Optional local `research` extra and checkpoints enable ICIG/letters; the hosted Python
+  preparation installs only `ui` by default, so neural models need explicit additional setup.
 - Uploads are sent to the hosted server. Do not upload confidential research data.
 - One fusion request executes at a time; queue capacity is eight.
 - Gradio cached files expire after an hour with checks every ten minutes.

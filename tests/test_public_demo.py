@@ -36,7 +36,7 @@ def test_clickable_examples_and_public_callback(tmp_path, monkeypatch):
     from fusion_agent.ui import gradio_app
 
     pairs = gradio_app.example_pairs()
-    assert len(pairs) == 4
+    assert len(pairs) == 19
     monkeypatch.setenv("FUSION_PUBLIC_DEMO", "1")
     monkeypatch.setattr(gradio_app, "public_output_root", lambda: tmp_path)
     result = gradio_app.run_demo(*pairs[0], "Compare", "both", False, False)

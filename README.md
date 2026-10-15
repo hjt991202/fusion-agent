@@ -8,9 +8,14 @@
 [Direct fullscreen demo](https://hjt991202-fusion-agent.static.hf.space/) ·
 [Public sample images](examples/tno/README.md)
 
+**[▶ View 15 Jiandu comparisons: ICIG + letters](docs/JIANDU_RESULTS.md)** ·
+[Original Jiandu samples](examples/jiandu/README.md) · [Local model setup](docs/RESEARCH_METHODS.md)
+
 Choose a sample, then click **Run fusion**. The free online version processes images entirely in
 your browser; no login, API key or image upload to a server is needed. It offers both algorithms,
-four metrics, PNG/report downloads and three real TNO pairs. It does not run the optional Agent.
+four metrics, PNG/report downloads and three real TNO pairs. The repository's expanded showcase adds
+15 Jiandu sample pairs and **precomputed** ICIG/letters results; neural inference runs locally
+through Python. It does not run the optional Agent.
 The local Gradio version below uses Python; the online version uses tested JavaScript kernels.
 Weighted fusion matches the Python grayscale kernel; Haar floating-point rounding can differ
 by one intensity level. Browser image decoding/color conversion can also differ from OpenCV.
@@ -19,6 +24,12 @@ See [deployment and browser scope](docs/DEPLOYMENT.md).
 Upload a registered visible/infrared pair, compare CPU fusion baselines, inspect measured statistics,
 and export a traceable report. An optional OpenAI Agents SDK coordinator interprets task preferences
 and invokes bounded tools. The deterministic path works locally without an API key.
+
+![Measured Jiandu 843: visible, infrared, ICIG color and letters color](docs/assets/jiandu/jiandu_0843.png)
+
+Actual outputs from the supplied checkpoints, with shared center crops. This selected example
+does not establish general quality or training/test independence. The source repository includes
+the expanded static showcase; updating the hosted Space is a separate publication step.
 
 ![Actual results on original synthetic inputs](docs/assets/demo-comparison.png)
 
@@ -29,6 +40,9 @@ A UI GIF is not yet recorded; see [capture checklist](docs/DEMO_CHECKLIST.md).
 
 - Image decoding, format/depth/channel checks, blank warnings, source SHA256 hashes.
 - Weighted average and one-level Haar wavelet fusion; grayscale, CPU-only.
+- Optional ICIG SparseGrFormer v3 and letters IDRNet/refinement adapters with color results,
+  local checkpoint loading and recorded model/configuration hashes.
+- Fifteen original-resolution Jiandu example pairs, source manifests and measured previews.
 - Four no-reference metrics, transparent heuristic comparison, Pydantic contracts.
 - Per-tool timings, unique run folders, PNGs, Markdown/JSON report and versioned configuration.
 - CLI and local Gradio uploads, original previews, fusion gallery, metric table, trace and download.
@@ -42,7 +56,7 @@ flowchart TD
     A --> T[Inspect inputs / Execute validated plan]
     T --> W
     W --> P[Validation / grayscale / explicit resize]
-    P --> F[Weighted average / Haar wavelet]
+    P --> F[Weighted / Haar / ICIG / letters]
     F --> M[Measured metrics / heuristic comparison]
     M --> R[PNGs / config / trace / report]
 ```
@@ -51,13 +65,15 @@ The agent receives task text and metadata/statistics, not pixels. Its tools bind
 paths and allowed methods; resizing needs explicit user permission through a flag. It inspects
 before executing at most one experiment, with a six-turn limit. Python generates the authoritative
 report; separate `agent_summary.json` stores model prose that cannot override measured results.
-There are no specialist-agent handoffs or trained neural models in this release.
+The two research adapters use supplied pretrained checkpoints; this project does not train models
+or perform specialist-agent handoffs. Checkpoints remain outside Git.
 
 ## Install
 
 Python 3.10+. NumPy handles arrays; OpenCV headless handles IO/grayscale/resize; PyWavelets handles
 Haar transforms; Pydantic validates contracts. Extras: `dev` (Pytest/Ruff), `ui` (Gradio),
-`agent` (OpenAI Agents SDK). PyTorch is **not used** by these baselines.
+`agent` (OpenAI Agents SDK), `research` (PyTorch, SciPy, einops and Pillow).
+The default baselines work without PyTorch.
 
 ```bash
 python -m venv .venv
@@ -71,6 +87,24 @@ python -m pip install -e ".[dev,ui,agent]"
 ```
 
 For CPU CLI only: `python -m pip install -e .`.
+
+## Run the two Jiandu methods
+
+```bash
+python -m pip install -e ".[research,ui]"
+python scripts/import_research_weights.py --icig ICIGCode.zip --letters lettersCode.zip
+python -m fusion_agent.cli --visible examples/jiandu/visible/jiandu_0239.png --infrared examples/jiandu/infrared/jiandu_0239.png --visible-y examples/jiandu/visible_y/jiandu_0239.png --method research --output outputs/jiandu
+python scripts/demo_jiandu.py --output outputs/jiandu-demo-NEW
+```
+
+The archives are supplied by the owner and are not distributed here. The import script copies
+only the two hash-checked weights into ignored `weights/`; alternatively set `FUSION_ICIG_WEIGHTS`
+and `FUSION_LETTERS_WEIGHTS`. A fresh clone can run the baselines and inspect the measured previews
+without weights. `--method icig`, `letters`, `research` (both research methods) or `all` are supported.
+`both` continues to mean the original two baselines. CPU is the default; `--device cuda` is optional.
+See [method details and reproduction](docs/RESEARCH_METHODS.md),
+[15-pair source manifest](examples/jiandu/README.md) and
+[measured demonstration](docs/JIANDU_RESULTS.md).
 
 ## Run without a key
 
@@ -118,7 +152,9 @@ coefficients and selects signed detail coefficients with larger absolute magnitu
 ties), using one level and symmetric extension. Inverse output is cropped for odd dimensions,
 rounded and clipped. These are interpretable baselines, not state-of-the-art claims.
 
-All statistics use the final 8-bit grayscale image X in [0,255]:
+All statistics use the saved 8-bit grayscale image X in [0,255]. For ICIG this is the raw fused
+gray output; its supplementary color restoration modifies luminance. For letters it is Pillow
+luminance of the final refined color output. These output semantics matter when comparing:
 
 | Metric | Definition | Reference? | Limitation |
 |---|---|---|---|
@@ -167,6 +203,8 @@ src/fusion_agent/   schemas, workflow, cli, tools/, agents/, ui/
 tests/             IO, algorithms, CLI, SDK and UI tests
 examples/          original synthetic images and generator
 examples/tno/      three attributed CC BY 4.0 public image pairs
+examples/jiandu/   15 owner-authorized RGB/IR/Y examples and source hashes
+src/fusion_agent/models/  optional ICIG and letters inference adapters
 scripts/           audit, experiment, analysis, verification
 .agents/skills/    four executable repository Skills
 docs/              progress, verification, model extension design, demo artifacts
@@ -181,15 +219,17 @@ Original synthetic images are bundled under MIT. Three pairs from the official T
 included under **CC BY 4.0**, with separate [attribution, license and provenance](examples/tno/README.md).
 They are losslessly converted from BMP to PNG without pixel edits. Choose a sample in Gradio,
 then click Run fusion. For manual download, open examples/tno/visible/ and examples/tno/infrared/.
-These selected samples are not a benchmark. Private images, full datasets, outputs and weights
+The owner also authorized 15 Jiandu examples for this repository's demonstration; they have no
+separate open dataset license and are not covered by MIT or TNO's CC BY license.
+These selected samples are not a benchmark. Private images, full datasets, raw run outputs and weights
 must stay out of Git. The deployed static demo processes images locally in the browser;
 the optional Python Space configuration would process uploads on a server if separately deployed.
 
-Limitations: 8-bit grayscale, no registration/calibration, no learned models/training, no dataset
-benchmark, no reference metrics, single coordinator, heuristic recommendation.
-**Roadmap (not implemented):** PyTorch adapter via `FusionMethod`, licensed pretrained model
-evaluation, color reconstruction, registration and downstream-task metrics.
-See [model extension design](docs/MODEL_EXTENSION.md).
+Limitations: 8-bit inputs, no training or validated geometric registration/calibration, no dataset
+benchmark, no reference metrics, single coordinator, heuristic recommendation. The letters model
+retains its supplied learned flow stage; successful execution does not validate alignment accuracy.
+Training/test independence of the supplied examples is unknown. GPU and live API verification
+are not claimed. See [model integration](docs/MODEL_EXTENSION.md).
 
 [MIT License](LICENSE). Thanks to NumPy, OpenCV, PyWavelets, Pydantic, Gradio, OpenAI Agents SDK,
 Pytest and Ruff. References:

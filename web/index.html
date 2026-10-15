@@ -2,14 +2,28 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="在线体验红外与可见光融合，包含 TNO 公开样例、两种算法、指标对比和报告下载。">
+  <meta name="description" content="查看 15 对简牍图像的 ICIG 与 letters 实测演示，或在浏览器中运行加权平均和小波融合。">
   <title>FusionAgent · 在线图像融合</title><link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="brand"><span class="logo">F</span><div><strong>FusionAgent</strong><span>红外—可见光图像融合</span></div></div>
   <a href="https://github.com/hjt991202/fusion-agent" target="_blank" rel="noreferrer">GitHub ↗</a></header>
 <main>
-  <div class="intro"><div><h1>对比融合，观察细节。</h1><p>选择一对公开样例，或上传自己的已配准图像。计算在浏览器内完成，图像不会上传。</p></div><span class="badge">无需登录 · 无需 API 密钥</span></div>
+  <div class="intro"><div><h1>对比融合，观察细节。</h1><p>查看简牍研究方法的实测结果，再用浏览器基线对比原图。也可以上传自己的已配准图像。</p></div><span class="badge">无需登录 · 无需 API 密钥</span></div>
+  <section class="showcase" aria-labelledby="showcase-title">
+    <div class="showcase-heading"><div><p class="eyebrow">JIANDU · 15 对简牍样例</p><h2 id="showcase-title">ICIG 与 letters 融合演示</h2></div><span class="badge precomputed">预先计算的模型结果</span></div>
+    <p class="showcase-description">保留原始尺寸推理；下图展示可见光、红外和两种方法的彩色结果，以及同位置细节。浏览器不执行这两个深度模型。</p>
+    <div class="showcase-controls"><label for="showcase-select">选择简牍样例<select id="showcase-select" disabled><option>正在读取演示清单…</option></select></label><button id="showcase-load" class="secondary" disabled>载入原图，运行浏览器基线 ↓</button></div>
+    <p id="showcase-status" class="meta" role="status" aria-live="polite">正在读取已计算结果…</p>
+    <div id="showcase-content" hidden>
+      <figure class="showcase-figure"><a id="showcase-preview-link" target="_blank" rel="noreferrer"><img id="showcase-preview" width="1000" height="740" alt="简牍图像融合对照与同位置细节"></a><figcaption>从左到右：可见光、红外、ICIG 彩色结果、letters 彩色结果。上方缩放展示全图；下方为相同源坐标的局部裁剪。点击查看大图。</figcaption></figure>
+      <div class="table-wrap"><table><caption>原始尺寸实测 · 8-bit 灰度指标</caption><thead><tr><th>方法</th><th>信息熵</th><th>标准差</th><th>平均梯度</th><th>空间频率</th><th>执行秒数</th></tr></thead><tbody id="showcase-metrics"></tbody></table></div>
+      <p class="note">ICIG 指标来自其原始融合灰度输出；letters 指标来自最终彩色结果转灰度。图中彩色预览与指标的计算对象有所不同。指标更高不代表整体质量更好；这些选择性样例不是基准测试，训练/测试独立性尚未确认。</p>
+      <div class="showcase-links"><a id="showcase-visible" target="_blank" rel="noreferrer">可见光原图 ↗</a><a id="showcase-infrared" target="_blank" rel="noreferrer">红外原图 ↗</a><a href="showcase/manifest.json">完整实测记录</a><a href="https://github.com/hjt991202/fusion-agent/blob/main/docs/RESEARCH_METHODS.md" target="_blank" rel="noreferrer">方法与复现说明 ↗</a></div>
+    </div>
+    <p class="showcase-license">简牍样例由项目所有者提供并授权本项目演示，不适用代码 MIT 或 TNO 的 CC BY 许可。<a href="samples/jiandu/README.md">来源与使用范围</a> · <a href="samples/jiandu/manifest.json">原图哈希清单</a></p>
+  </section>
+  <div class="baseline-heading"><h2>浏览器即时融合</h2><p>加权平均与 Haar 小波在本机浏览器计算；上传图片不会发送到服务器。</p></div>
   <section class="samples" aria-label="公开样例">
     <div class="section-label">快速试用 <small>TNO · CC BY 4.0</small></div>
     <div class="sample-grid">
@@ -19,13 +33,13 @@
       <button class="sample" data-sample="synthetic"><img src="samples/visible.png" alt="合成纹理样例"><span>合成纹理 <small>Synthetic</small></span></button>
     </div>
   </section>
-  <section class="input-grid" aria-label="输入图像">
+  <section id="baseline-inputs" class="input-grid" aria-label="输入图像">
     <div class="image-card"><div class="card-head"><h2>可见光 <small>Visible</small></h2><label class="upload" for="visible-file">选择图片<input id="visible-file" type="file" accept="image/png,image/jpeg,image/bmp,image/webp"></label></div><div class="image-well"><img id="visible-preview" alt="可见光输入预览" hidden><span id="visible-empty">选择上方样例，或上传图片</span></div><p id="visible-info" class="meta">尚未选择</p></div>
     <div class="image-card"><div class="card-head"><h2>红外 <small>Infrared</small></h2><label class="upload" for="infrared-file">选择图片<input id="infrared-file" type="file" accept="image/png,image/jpeg,image/bmp,image/webp"></label></div><div class="image-well"><img id="infrared-preview" alt="红外输入预览" hidden><span id="infrared-empty">同一场景、相同尺寸</span></div><p id="infrared-info" class="meta">尚未选择</p></div>
   </section>
   <section class="controls"><div><label for="weight">可见光权重 <output id="weight-value">0.50</output></label><input id="weight" type="range" min="0" max="1" step="0.05" value="0.5"><small>仅用于加权平均；小波算法参数固定</small></div>
     <div class="task"><label for="task">任务备注（可选）</label><input id="task" maxlength="500" placeholder="例如：观察热目标与背景纹理"><small>备注写入报告，不改变算法或调用 Agent</small></div>
-    <button id="run" class="primary" disabled>运行两种融合方法 →</button></section>
+    <button id="run" class="primary" disabled>运行两种浏览器基线 →</button></section>
   <p id="status" role="status" aria-live="polite">先选择一对图片。</p>
   <section id="results" hidden>
     <div class="section-label">融合结果 <button id="download-report" class="secondary">下载实验报告 ↓</button></div>
@@ -34,7 +48,7 @@
     <div class="table-wrap"><table><caption>实测指标 · 8-bit 灰度</caption><thead><tr><th>方法</th><th>信息熵</th><th>标准差</th><th>平均梯度</th><th>空间频率</th></tr></thead><tbody id="metric-rows"></tbody></table></div>
     <p id="recommendation" class="note"></p><details><summary>查看实际执行记录</summary><pre id="trace"></pre></details>
   </section>
-  <footer><p><strong>如何解读：</strong>指标更高不一定更好，噪声也会增加梯度和熵。请同时检查热目标、纹理与伪影。这里不执行几何配准或深度模型。</p>
+  <footer><p><strong>如何解读：</strong>指标更高不一定更好，噪声也会增加梯度和熵。请同时检查目标、纹理与伪影。浏览器不执行几何配准；上方深度模型结果已预先计算。</p>
   <p>公开样例：Alexander Toet / TNO, Soesterberg, The Netherlands · <a href="https://doi.org/10.6084/m9.figshare.1008029.v2">TNO Image Fusion Dataset</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>。BMP 无损转 PNG，无像素编辑。<a href="samples/tno/README.md">署名与修改说明</a> · <a href="samples/tno/manifest.json">来源校验记录</a>。</p>
   <p>浏览器版支持 PNG/JPEG/BMP/WebP、最多 400 万像素和 16 MiB。彩色转灰度，透明图片拒绝处理；高位深图像请先明确转换为 8-bit。Haar 浮点舍入可能与 Python 相差 1 灰度级。</p></footer>
 </main><script type="module" src="app.mjs"></script>

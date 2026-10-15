@@ -32,6 +32,9 @@ English code/comments, typed core functions, Ruff, small modules, bilingual trut
 No keys in code/logs/Git. Environment variables only; .env.example contains no secrets.
 Never commit private research images, full datasets, weights, caches or outputs. Do not alter source
 data during audits. Bundled examples are synthetic shapes plus a small attributed CC BY 4.0 TNO
-subset. Preserve the TNO license, source manifest and pixel hashes; examples are not benchmarks.
+subset, plus 15 owner-authorized Jiandu RGB/IR/Y demonstration triplets with no general data license.
+Preserve source manifests, pixel hashes and the TNO license; examples are not benchmarks.
+Keep full test/, original research ZIP archives and local weights/ ignored. Research adapters are
+optional; default baselines must work without PyTorch. Static neural previews are precomputed.
 Resizing is explicit and is never described as registration. No single quality metric proves
 perceptual superiority. Public releases require user authorization.

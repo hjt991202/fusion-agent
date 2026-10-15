@@ -6,6 +6,7 @@ import os
 import time
 from pathlib import Path
 
+from fusion_agent.models.runtime import ModelOptions
 from fusion_agent.schemas import AnalysisReport, Contract, FusionPlan, ToolRecord
 from fusion_agent.tools.image_io import inspect_image_pair
 from fusion_agent.workflow import run_workflow
@@ -22,6 +23,7 @@ def build_agent(
     output: str | Path,
     task: str,
     constraints: FusionPlan,
+    model_options: ModelOptions | None = None,
 ):
     from agents import Agent, ModelSettings, function_tool
 
@@ -61,7 +63,14 @@ def build_agent(
             )
         )
         report = run_workflow(
-            visible, infrared, output, task, plan, mode="agent", initial_records=state["records"]
+            visible,
+            infrared,
+            output,
+            task,
+            plan,
+            mode="agent",
+            initial_records=state["records"],
+            model_options=model_options,
         )
         state["report"] = report
         # Only metadata/statistics leave the machine, never pixels or absolute output paths.
@@ -78,7 +87,7 @@ def build_agent(
         name="Fusion coordinator",
         model=os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
         instructions=(
-            "Plan infrared-visible grayscale fusion from the user's task. First inspect_inputs; "
+            "Plan infrared-visible fusion from the user's task. First inspect_inputs; "
             "then execute_fusion exactly once. Tools are the only source of execution evidence. "
             "Never invent metrics or claim to see pixels. Select allowed methods and weight for "
             "the task; Haar has fixed parameters. Summarize measured results and limitations. "
@@ -98,18 +107,25 @@ def run_agent_workflow(
     output: str | Path,
     task: str,
     constraints: FusionPlan | None = None,
+    model_options: ModelOptions | None = None,
 ) -> AnalysisReport:
     constraints = constraints or FusionPlan()
     if not os.getenv("OPENAI_API_KEY", "").strip():
         logging.getLogger(__name__).warning("No OPENAI_API_KEY; using deterministic fallback.")
         return run_workflow(
-            visible, infrared, output, task, constraints, mode="deterministic-fallback-no-key"
+            visible,
+            infrared,
+            output,
+            task,
+            constraints,
+            mode="deterministic-fallback-no-key",
+            model_options=model_options,
         )
     try:
         from agents import RunConfig, Runner
     except ImportError as exc:
         raise RuntimeError("Install the agent extra: pip install -e '.[agent]'") from exc
-    agent, state = build_agent(visible, infrared, output, task, constraints)
+    agent, state = build_agent(visible, infrared, output, task, constraints, model_options)
     try:
         result = Runner.run_sync(
             agent, task, max_turns=6, run_config=RunConfig(tracing_disabled=True)

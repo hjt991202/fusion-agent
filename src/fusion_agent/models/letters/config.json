@@ -1,0 +1,36 @@
+{
+  "anchor": {
+    "ink_threshold": 0.42,
+    "ink_blur": 5,
+    "ink_gain": 0.22,
+    "ink_darken": 0.035,
+    "ink_gamma": 0.0,
+    "bg_rgb_keep": 0.85,
+    "chroma_from_rgb": 1.0
+  },
+  "refinement": {
+    "gamma": 1.5,
+    "neutral": 0.3
+  },
+  "boundary_protection": {
+    "width_at256": 16,
+    "strength": 1.0
+  },
+  "transverse_reference": {
+    "mode": "soft",
+    "width": 16
+  },
+  "masked_context": {
+    "width": 16,
+    "strength": 1.0
+  },
+  "color_transfer": {
+    "mode": "VIS_RGB_chroma_at_fused_luma",
+    "scope": "all_observed_material",
+    "integer_gray_lock": [
+      "PIL",
+      "OpenCV"
+    ],
+    "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+  }
+}

@@ -6,7 +6,8 @@
 - CPU grayscale baselines first. No claims of trained models or real sensor benchmarks.
 - Resizing is explicit and is not geometric registration.
 - Agent is optional; deterministic execution remains available without credentials.
-- Synthetic demonstrations plus three user-authorized CC BY 4.0 TNO pairs; no private research data.
+- Synthetic demonstrations, three user-authorized CC BY 4.0 TNO pairs, and fifteen owner-authorized
+  Jiandu RGB/IR/Y demo triplets. Full research datasets and checkpoints stay out of Git.
 
 ## Stages
 1. Complete: packaging installed in isolated .venv; pip check passed.
@@ -32,8 +33,28 @@ For future changes follow AGENTS.md and use project-verification before each com
 
 ## Known limits
 No live paid API call or real sensor benchmark. Offline SDK tests do not prove model access.
-No deep model, training, geometric registration or reference metric is implemented.
-Browser automation timed out; Gradio tested by real HTTP startup and direct callbacks.
+Two pretrained research adapters are now implemented; no training, validated geometric registration
+or reference metrics. CPU verified, CUDA untested. Static browser neural results are precomputed.
+The earlier browser-automation limitation was resolved during the Jiandu update below.
+
+## Jiandu integration update (2026-10-15)
+- Extended the existing workflow, CLI, Gradio and bounded Agent dispatch with ICIG and letters.
+  Default weighted/Haar behavior remains available without optional research dependencies.
+- Imported only reviewed inference code; local ZIPs, full test/ and checkpoints stay ignored.
+  A hash-checked helper imports local weights from the owner's original archives.
+- Audited all 327 RGB/IR/Y triplets (981 PNGs) read-only and rechecked source hashes afterward.
+  Selected 15 pairs deterministically by size/aspect/brightness coverage, without output scoring.
+- Ran all four methods on all 15 original-resolution pairs. Recomputed all 60 metric records
+  from actual output PNGs; curated preview plates, shared center crops and evidence are included.
+- Exact CPU pixel parity against original-code reruns: ICIG two pairs; letters one masked pair.
+- Full local project verification passed: 115 tests, Ruff lint/format, CLI, three JS syntax checks,
+  browser/Python kernel parity and candidate audit. Original torch.qr deprecation is retained.
+- Gradio was exercised through a real browser on sample 517 with both research methods and
+  prepared VIS_Y; its metrics matched the batch. Static page loaded the 15-pair gallery and
+  ran baselines on sample 843 with no browser errors. Local stage contains 80 allowlisted files.
+- Reproduction and measured interpretation: docs/RESEARCH_METHODS.md and docs/JIANDU_RESULTS.md.
+  Publication to GitHub is authorized by the current user request; publishing new images to the
+  existing Hugging Face Space is a separate optional destination decision.
 
 ## Online deployment update
 - User requested an online demonstration and redistributable public examples.

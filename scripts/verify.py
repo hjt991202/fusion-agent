@@ -80,7 +80,7 @@ def main() -> int:
         )
     issues = candidate_audit()
     if shutil.which("node"):
-        for source in ["web/app.mjs", "web/fusion.mjs"]:
+        for source in ["web/app.mjs", "web/fusion.mjs", "web/showcase.mjs"]:
             result = subprocess.run(["node", "--check", source], capture_output=True, text=True)
             checks.append(
                 {

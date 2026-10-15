@@ -4,7 +4,21 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-Method = Literal["weighted", "wavelet"]
+Method = Literal["weighted", "wavelet", "icig", "letters"]
+
+
+def selected_methods(selection: str) -> list[Method]:
+    """Keep the original baseline default while exposing optional learned methods."""
+    groups = {
+        "both": ["weighted", "wavelet"],
+        "research": ["icig", "letters"],
+        "all": ["weighted", "wavelet", "icig", "letters"],
+    }
+    if selection in groups:
+        return groups[selection]
+    if selection not in {"weighted", "wavelet", "icig", "letters"}:
+        raise ValueError(f"Unknown method: {selection}")
+    return [selection]
 
 
 class Contract(BaseModel):
@@ -31,7 +45,7 @@ class FusionPlan(Contract):
     methods: list[Method] = Field(default_factory=lambda: ["weighted", "wavelet"], min_length=1)
     visible_weight: float = Field(default=0.5, ge=0, le=1)
     resize: bool = False
-    rationale: str = "Compare two CPU baselines."
+    rationale: str = "Execute the user-selected fusion methods."
 
 
 class MetricResult(Contract):

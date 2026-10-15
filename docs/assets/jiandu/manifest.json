@@ -1,0 +1,2875 @@
+{
+  "scope": "15 selected examples, not a benchmark; training/test independence unknown",
+  "inference": "Original source resolution, no input resize; CPU evaluation mode",
+  "icig_input": "Original supplied VIS_Y for ICIG; RGB for color reconstruction",
+  "letters_input": "RGB visible, grayscale IR; all pixels valid, material from visible color",
+  "metrics": "Saved gray output: ICIG raw fused gray; letters Pillow L of final color",
+  "display": "Precomputed color previews with display scaling and center crops; not browser neural inference. Metrics use full-resolution gray outputs.",
+  "pairs": [
+    {
+      "id": "jiandu_0239",
+      "source_id": 239,
+      "width": 116,
+      "height": 2696,
+      "input_hashes": {
+        "visible": "95fb981fb66032ba0760ed509fbffa9c8a577b5a37a94562e0a08aaf2b3b519d",
+        "infrared": "04d5de880b37245184244b18e39f53cc606dd5e8af281ad000780943bd8d3dfb",
+        "visible_y": "1a9e2a57d307a0a11e6b2c7472c16b870cfc4746d747d2e79cb08ee071597c06"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 5.9425680748143375,
+          "standard_deviation": 53.64293475271225,
+          "average_gradient": 4.727085182320898,
+          "spatial_frequency": 11.860781593927483
+        },
+        "wavelet": {
+          "entropy": 6.17517528790079,
+          "standard_deviation": 54.251496876048556,
+          "average_gradient": 6.910662358976533,
+          "spatial_frequency": 16.488566952126803
+        },
+        "icig": {
+          "entropy": 6.221681606120821,
+          "standard_deviation": 51.18607221309133,
+          "average_gradient": 7.094782955674649,
+          "spatial_frequency": 16.839684062870717
+        },
+        "letters": {
+          "entropy": 5.613390521702765,
+          "standard_deviation": 80.69411486150047,
+          "average_gradient": 4.657848776372757,
+          "spatial_frequency": 17.199669648534208
+        }
+      },
+      "seconds": 108.17395680000482,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.0035362000053282827,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.011230900010559708,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 103.52700639999239,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 2.799831800002721,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_0239.png",
+              "sha256": "1a9e2a57d307a0a11e6b2c7472c16b870cfc4746d747d2e79cb08ee071597c06"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 14,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 103.48485899998923,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 312736,
+            "material_pixels": 142433,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6740426421165466,
+            "flow_p95_pixels": 0.6769585609436035
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "c012c82cb5e8edfea2b8548a0e1af79199203368e60cb97caf5797b93908036f",
+        "icig_color": "8d598e80ce868fe6e83dfff2993e011a0b6d8e78a9bbb41de18b302ef84dfb89",
+        "letters": "5d494b6668a239cf7e87f264a6c0455c748de74012e15cf19a7a827e27c60657",
+        "letters_color": "a66be8c6d73ac03ca2f3cb1e78e68a8643c64fbf1d0f2348039552138e312b9a"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.068185306456564
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.0169003035574201,
+          "fraction_at_255": 0.041596319792625944
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.0
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.047284823834373615,
+          "fraction_at_255": 0.004213351410348239
+        }
+      },
+      "preview": "jiandu_0239.png"
+    },
+    {
+      "id": "jiandu_0406",
+      "source_id": 406,
+      "width": 355,
+      "height": 1654,
+      "input_hashes": {
+        "visible": "ab3eda3c94982eb9a22750a6c930451192c631c39ac9b51fc5dce31d42307947",
+        "infrared": "6afd8d0ae2a35bdaa87e6f52337ac0f752ea73e1228f20cf568d0186838562a3",
+        "visible_y": "e92c0901b88291a5656c9fa0d9ec9328b3a8035d4c5f626453fe018a824016ae"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 6.252558955674339,
+          "standard_deviation": 49.48992598188739,
+          "average_gradient": 6.7865180751124266,
+          "spatial_frequency": 13.53266446550459
+        },
+        "wavelet": {
+          "entropy": 6.578351617051346,
+          "standard_deviation": 50.44647803130802,
+          "average_gradient": 10.532485807853131,
+          "spatial_frequency": 20.902875093832314
+        },
+        "icig": {
+          "entropy": 6.711307861157782,
+          "standard_deviation": 44.656253672803075,
+          "average_gradient": 9.90447304401016,
+          "spatial_frequency": 19.51937702718173
+        },
+        "letters": {
+          "entropy": 5.9759683224883755,
+          "standard_deviation": 65.87985821282274,
+          "average_gradient": 3.11351582894858,
+          "spatial_frequency": 10.150954177239106
+        }
+      },
+      "seconds": 76.53523029999633,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.006769399988115765,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.036341600003652275,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 72.81745709999814,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 3.473855000003823,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_0406.png",
+              "sha256": "e92c0901b88291a5656c9fa0d9ec9328b3a8035d4c5f626453fe018a824016ae"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 18,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 72.78211430000374,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 587170,
+            "material_pixels": 432805,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6752759218215942,
+            "flow_p95_pixels": 0.6764938235282898
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "8451ca7d4c6c68205365b406a74b35ac2b4958dc958b90ce4f56bc2b334dc31f",
+        "icig_color": "84616af7a90d578fe5a0a9b9322c698ae9929afbd9889a24cf38a190105b751e",
+        "letters": "b80fdb26a7fae4829da09a010fa882fc3d7487e546abeb52fbcab89c456b644a",
+        "letters_color": "b60528956d6b3f2f1c49f2225866617a1be40bc9e1e8b3f7f05133f83ee562dd"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.023485532298993476
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.026148588426974585,
+          "fraction_at_255": 0.012411510578991888
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 3.4061685712825928e-06
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.03684963468842073,
+          "fraction_at_255": 0.0031677367712928113
+        }
+      },
+      "preview": "jiandu_0406.png"
+    },
+    {
+      "id": "jiandu_0517",
+      "source_id": 517,
+      "width": 186,
+      "height": 401,
+      "input_hashes": {
+        "visible": "b0aa8809241bad5e5b6a3cc988868d4267ff7f0f26d990ac86666350c767e5b7",
+        "infrared": "751bb56e16ebd3034b85f0afbff8d4968be983fb577fc419f448e47e77557945",
+        "visible_y": "eae79449f75817f52ae579a7a2afba8db04ed886c0464b5a6c705083cf7eb24c"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 5.098144567176792,
+          "standard_deviation": 54.65652387345211,
+          "average_gradient": 4.752712276752377,
+          "spatial_frequency": 11.729697217015291
+        },
+        "wavelet": {
+          "entropy": 5.332821064426162,
+          "standard_deviation": 55.179475659513535,
+          "average_gradient": 7.05371100772507,
+          "spatial_frequency": 16.91820931478862
+        },
+        "icig": {
+          "entropy": 5.381247019369703,
+          "standard_deviation": 36.38378903522924,
+          "average_gradient": 6.711597756892447,
+          "spatial_frequency": 15.676311766405151
+        },
+        "letters": {
+          "entropy": 4.744168716271895,
+          "standard_deviation": 82.69302266562751,
+          "average_gradient": 4.370172663803329,
+          "spatial_frequency": 14.921211760931802
+        }
+      },
+      "seconds": 7.992289400004665,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.00024989999656099826,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.0012981999898329377,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 7.5754804000025615,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 0.3544986999913817,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_0517.png",
+              "sha256": "eae79449f75817f52ae579a7a2afba8db04ed886c0464b5a6c705083cf7eb24c"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 2,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 7.546834100008709,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 74586,
+            "material_pixels": 34329,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6741722822189331,
+            "flow_p95_pixels": 0.6766940355300903
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "0dd112f7a853884a82fd3ed03cb194292e9a319dcfed55de66f4f7bcedc59bb8",
+        "icig_color": "f19799ec85b326f036db28502c309531174dda3b871d3cf77f41d01e739b4eab",
+        "letters": "16d890345814aedb6a5777547fd16fe254f255be21550d6abebfb857459982df",
+        "letters_color": "cd5620014e4d5c4d9d0e028867bd4b52fc954d2be99012908aa4dc608c95a173"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.04888316842302845
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.015986020611553554,
+          "fraction_at_255": 0.024553312060350916
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.0
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.006301450674389295,
+          "fraction_at_255": 0.00301665191859062
+        }
+      },
+      "preview": "jiandu_0517.png"
+    },
+    {
+      "id": "jiandu_0606",
+      "source_id": 606,
+      "width": 206,
+      "height": 1367,
+      "input_hashes": {
+        "visible": "9b485d8f0a98df12fece8787242847c50291c2fe098967eb2f34d5d254d63f71",
+        "infrared": "907352b6574a2f6d6d03ab0feb9f5d12a7005decfe56103ef4d6613cf8df521c",
+        "visible_y": "f323accdbabdc98b2146db8eeebc97139850e4431de8fb9a3d40b05c522d41b9"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 5.452730794346373,
+          "standard_deviation": 59.72942692053282,
+          "average_gradient": 5.820182608798721,
+          "spatial_frequency": 13.189104068931487
+        },
+        "wavelet": {
+          "entropy": 5.683601536005756,
+          "standard_deviation": 60.49931314889265,
+          "average_gradient": 9.436924705834485,
+          "spatial_frequency": 21.097170954467433
+        },
+        "icig": {
+          "entropy": 5.759090538256322,
+          "standard_deviation": 44.75103718231773,
+          "average_gradient": 8.3254980814089,
+          "spatial_frequency": 18.464655420536836
+        },
+        "letters": {
+          "entropy": 4.932605029255468,
+          "standard_deviation": 87.5545347066846,
+          "average_gradient": 3.489985126444258,
+          "spatial_frequency": 13.958709127027214
+        }
+      },
+      "seconds": 27.95412139999098,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.0029654999962076545,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.009007100001326762,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 26.328512899999623,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 1.4968037999933586,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_0606.png",
+              "sha256": "f323accdbabdc98b2146db8eeebc97139850e4431de8fb9a3d40b05c522d41b9"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 7,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 26.299096899994765,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 281602,
+            "material_pixels": 146386,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6744579076766968,
+            "flow_p95_pixels": 0.6766490936279297
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "f97a9b7bb3d30bc01e829bc4227b916c7ffcec3c0de4a77498cc4110a1b32d1f",
+        "icig_color": "55677861a2793c535d7b94e68cfbe110dacab81fe85f93e33a6c50b641869170",
+        "letters": "0eeeb85f48b329e7706b882c07062cab6d6ab4fd2bec64b58745f0557e844140",
+        "letters_color": "94da1240b67cf23927f2c9a94ead3d876932d7ede87f3ef3f3d8cfa2c09af473"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.08797522744866869
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.02736367876175122,
+          "fraction_at_255": 0.02011112610469149
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.0
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.028696529143969148,
+          "fraction_at_255": 0.00131154371536187
+        }
+      },
+      "preview": "jiandu_0606.png"
+    },
+    {
+      "id": "jiandu_0705",
+      "source_id": 705,
+      "width": 163,
+      "height": 376,
+      "input_hashes": {
+        "visible": "c0c927d4ee0775d87c410f7f8559f2fad357a8c0b7896716a4f711d5516ee210",
+        "infrared": "ed31e909ba4f47dfe349c5760e76ef6ebf7bacd7fc50ff56bf3638c7cc3d2971",
+        "visible_y": "73f99c577105098ecef8137a92ea139c7a0a3b322bfcf83c1e6f8cc7572ac667"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 5.609284552935351,
+          "standard_deviation": 60.27906270527254,
+          "average_gradient": 6.592976406477457,
+          "spatial_frequency": 14.452511731441245
+        },
+        "wavelet": {
+          "entropy": 5.994063177177488,
+          "standard_deviation": 61.037275612522635,
+          "average_gradient": 9.947366590807412,
+          "spatial_frequency": 20.850224490476887
+        },
+        "icig": {
+          "entropy": 6.330020496514194,
+          "standard_deviation": 45.56402491139857,
+          "average_gradient": 9.439320080411454,
+          "spatial_frequency": 19.423765542155145
+        },
+        "letters": {
+          "entropy": 5.569994169454189,
+          "standard_deviation": 90.8077096286407,
+          "average_gradient": 4.615817424836311,
+          "spatial_frequency": 16.38619600879564
+        }
+      },
+      "seconds": 7.881712200003676,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.0003217000048607588,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.0011935999937122688,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 7.541774400000577,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 0.284060000005411,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_0705.png",
+              "sha256": "73f99c577105098ecef8137a92ea139c7a0a3b322bfcf83c1e6f8cc7572ac667"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 2,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 7.512732600007439,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 61288,
+            "material_pixels": 38066,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6747959852218628,
+            "flow_p95_pixels": 0.6768648624420166
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "92bd535024ad785658838f2abcd992063faf5adbbe74bb5d567ba3f1da26bd53",
+        "icig_color": "18fb9430ec5a0d8869a6b94e4e1c1d6b87d2fe4d3896b64c64d01a3e9d4a6f05",
+        "letters": "ed7b810818fe3860665415e2077238d66b2ebc9e02ce7b6ab233ab65b38fdf36",
+        "letters_color": "80879fc1c1c410880794937fbc239e354d3acf5118157b86ec140f0f177d2d59"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.03325283905495366
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.0666525257799243,
+          "fraction_at_255": 0.018752991341426273
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 1.631640777966323e-05
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.09115977026497846,
+          "fraction_at_255": 0.0030892398729495713
+        }
+      },
+      "preview": "jiandu_0705.png"
+    },
+    {
+      "id": "jiandu_0843",
+      "source_id": 843,
+      "width": 591,
+      "height": 648,
+      "input_hashes": {
+        "visible": "dfd3cc953f00b1444c2b16d11e1a341cd89adc2feff5aefbd715d2189ecf1e8b",
+        "infrared": "e66f93da0fdccb7adf645cb166a14041d3d5e1847caae80f3f1b537479450aa4",
+        "visible_y": "261c0236489ac14ac84d33dd5ceb12906cb85bd23cdc14f7be27d9540246ff05"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 5.713914797220643,
+          "standard_deviation": 58.05228622072208,
+          "average_gradient": 5.7193358782780495,
+          "spatial_frequency": 12.809345703628491
+        },
+        "wavelet": {
+          "entropy": 5.944939350512487,
+          "standard_deviation": 58.75352416148838,
+          "average_gradient": 9.436044557560615,
+          "spatial_frequency": 20.776999459009833
+        },
+        "icig": {
+          "entropy": 5.979828366661262,
+          "standard_deviation": 51.75825863666778,
+          "average_gradient": 7.558109296989494,
+          "spatial_frequency": 17.294185140290562
+        },
+        "letters": {
+          "entropy": 5.374097749070182,
+          "standard_deviation": 86.50894907599117,
+          "average_gradient": 3.574189213513191,
+          "spatial_frequency": 12.809045341065113
+        }
+      },
+      "seconds": 47.76316120001138,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.0040822000009939075,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.01418569999805186,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 45.23192099999869,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 2.389361399997142,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_0843.png",
+              "sha256": "261c0236489ac14ac84d33dd5ceb12906cb85bd23cdc14f7be27d9540246ff05"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 12,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 45.202905199999805,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 382968,
+            "material_pixels": 202980,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6744565367698669,
+            "flow_p95_pixels": 0.6765045523643494
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "0aa870a5291d5ca0c893fd1735df524c9dbf607f6b84f39cef3f9fc4c39a3215",
+        "icig_color": "63756dd4bd29cfdb240a2ca507793d8523a83580a21b7b82df14cd8d2816c99c",
+        "letters": "c0aa2f49de972c09992b0226d7b346f4fe510d7e978d124afe99d5c0e86d35da",
+        "letters_color": "8b62e49c38d1b88ea20b711be7b991b93747eccdc84ecfadc68fe6c5307ac257"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.12661893421904702
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.027807371198986165,
+          "fraction_at_255": 0.019932909973331105
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 8.878026362515929e-05
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.09350476628160403,
+          "fraction_at_255": 0.0017904019831073788
+        }
+      },
+      "preview": "jiandu_0843.png"
+    },
+    {
+      "id": "jiandu_0844",
+      "source_id": 844,
+      "width": 462,
+      "height": 661,
+      "input_hashes": {
+        "visible": "d618f6e28d338bc5908857ed98d47face6c1e8c1574c7e56fea3545191eb53c3",
+        "infrared": "b80cbc8e388cf264edbd0554ff9d0e138115c66f1522fc1b6365ef160bb9621e",
+        "visible_y": "b4774f57212d31f4b9d32b83c03b9da325ca5215574b828c79377dd2a2a74c25"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 6.578838173270624,
+          "standard_deviation": 47.24887677286345,
+          "average_gradient": 7.881046021156932,
+          "spatial_frequency": 14.737415815808038
+        },
+        "wavelet": {
+          "entropy": 6.876080871052603,
+          "standard_deviation": 48.40454183878811,
+          "average_gradient": 12.405465288802379,
+          "spatial_frequency": 23.05319604928498
+        },
+        "icig": {
+          "entropy": 7.001066987991523,
+          "standard_deviation": 47.08018234530818,
+          "average_gradient": 11.39294739988054,
+          "spatial_frequency": 21.056361966049742
+        },
+        "letters": {
+          "entropy": 6.6133460928914465,
+          "standard_deviation": 69.17963114819928,
+          "average_gradient": 4.844520235766346,
+          "spatial_frequency": 13.516206473816567
+        }
+      },
+      "seconds": 50.35292399999162,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.0032953000045381486,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.010305600007995963,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 48.28340860000753,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 1.9304431999917142,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_0844.png",
+              "sha256": "b4774f57212d31f4b9d32b83c03b9da325ca5215574b828c79377dd2a2a74c25"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 12,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 48.254182300006505,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 305382,
+            "material_pixels": 240387,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6753051280975342,
+            "flow_p95_pixels": 0.676436185836792
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "0d001b23742b16e896ade30a474938ed97d17a813e7ff8d8ad80e942a83962ce",
+        "icig_color": "8d065264e472919c296d7a87851feb519f00a63b60242a39e53bd6a71964725c",
+        "letters": "58afe4e55da647f3350c4a5ceb8e26f2386f5a4b6fef9e5dc81cd7c2b7a29045",
+        "letters_color": "dd77e690ae7e2a20dc3c6654710aeac9645cff8d58ba1f05b42159376d55bb30"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 1.309834895311446e-05,
+          "fraction_at_255": 0.038800584186363306
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.012444523034538163,
+          "fraction_at_255": 0.01514059986072089
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.0
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.04984467541199765,
+          "fraction_at_255": 0.002386082567625684
+        }
+      },
+      "preview": "jiandu_0844.png"
+    },
+    {
+      "id": "jiandu_0964",
+      "source_id": 964,
+      "width": 246,
+      "height": 2718,
+      "input_hashes": {
+        "visible": "ef2f2d25b7cf778c13171388be9e04c0f31c541b8d9920f149f2d2b66a4064c2",
+        "infrared": "a09cd90dcf32d2612f80c17236cac0e678e568b909a494b565245610906cd081",
+        "visible_y": "b7e5b0eb295755450135d21018d65a6ab13132045cfea3c0e2e73f155c148646"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 4.590505844293594,
+          "standard_deviation": 44.71501105947701,
+          "average_gradient": 3.428234916965538,
+          "spatial_frequency": 10.404451990220982
+        },
+        "wavelet": {
+          "entropy": 4.709329850559656,
+          "standard_deviation": 45.36966146186258,
+          "average_gradient": 5.5223302351988055,
+          "spatial_frequency": 16.57337513189617
+        },
+        "icig": {
+          "entropy": 4.1291752591214,
+          "standard_deviation": 38.81143398515977,
+          "average_gradient": 4.3128599996912484,
+          "spatial_frequency": 13.59066997669268
+        },
+        "letters": {
+          "entropy": 4.270066883542161,
+          "standard_deviation": 72.08259900835368,
+          "average_gradient": 3.90785689543032,
+          "spatial_frequency": 15.671838749125982
+        }
+      },
+      "seconds": 54.2372858000017,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.006787200007238425,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.024631699998280965,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 50.27572689999943,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 3.7501709000061965,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_0964.png",
+              "sha256": "b7e5b0eb295755450135d21018d65a6ab13132045cfea3c0e2e73f155c148646"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 14,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 50.24399990000529,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 668628,
+            "material_pixels": 181916,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6734706163406372,
+            "flow_p95_pixels": 0.676419734954834
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "13ea2db2bde5e3ab6fd16a4ac0790d93aa9ec0bf7f433869cf7307e3e8a25b92",
+        "icig_color": "0064c74f89b8bb04a7fe68ace503f950096af6b53ab564b744d9ac4d8eb90838",
+        "letters": "073ebbb5401f5c9d171702dd9dec5346398e1c74d9d2cceb2f143ba0b4a747fd",
+        "letters_color": "094942fe41295489773c5675683b48d7d2f5c52bbb7c7595044fbb1b04e2a744"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 2.991199889923844e-06,
+          "fraction_at_255": 0.4461733579808204
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.003573486801829019,
+          "fraction_at_255": 0.040799966498561234
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 1.495599944961922e-06
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.020716551904297557,
+          "fraction_at_255": 0.001129177958446251
+        }
+      },
+      "preview": "jiandu_0964.png"
+    },
+    {
+      "id": "jiandu_1116",
+      "source_id": 1116,
+      "width": 196,
+      "height": 2797,
+      "input_hashes": {
+        "visible": "1e90b3e8a8937c78bd43c89e95013199dddd374f35f7203a8311da68d5e51708",
+        "infrared": "839fc2bf872ebc55f4add3ecebcc1f14ea8e9488b9e327e195df994c815a3b8e",
+        "visible_y": "6af2e9fbeb9b6059d767045ce8b17335af0462ff9096fcdbd8b3a27861878736"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 6.301856967736503,
+          "standard_deviation": 67.91202308878277,
+          "average_gradient": 5.830702241486517,
+          "spatial_frequency": 12.859167998816222
+        },
+        "wavelet": {
+          "entropy": 6.5572085299149725,
+          "standard_deviation": 68.44553111507695,
+          "average_gradient": 8.88656771512235,
+          "spatial_frequency": 19.01607893073039
+        },
+        "icig": {
+          "entropy": 6.595453085569171,
+          "standard_deviation": 70.28578339455967,
+          "average_gradient": 8.16112834125882,
+          "spatial_frequency": 17.377594378007
+        },
+        "letters": {
+          "entropy": 6.032625895055082,
+          "standard_deviation": 83.78372883707391,
+          "average_gradient": 5.301755671285974,
+          "spatial_frequency": 15.34487416484164
+        }
+      },
+      "seconds": 58.415640899998834,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.005321300006471574,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.018587500002468005,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 55.35295359999873,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 2.8595682000013767,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_1116.png",
+              "sha256": "6af2e9fbeb9b6059d767045ce8b17335af0462ff9096fcdbd8b3a27861878736"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 15,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 55.32296769999084,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 548212,
+            "material_pixels": 319037,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6744888424873352,
+            "flow_p95_pixels": 0.676366925239563
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "cea3d6fbc3d1a36478ec83224bc623d14830517c8ba56a58ab3846936f15563a",
+        "icig_color": "dfc59de62ac9773652a0c15bf7628365096e045bc77c36929f0d28095a216859",
+        "letters": "cb4fa012d824f55e8e8a1415411eae0ae510aa249d7990c8e60ace3751bd794d",
+        "letters_color": "d7b27d98cb1d32d9b944c9d21d9173ad223e93989e2e11acccd33fa2b71b6765"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 9.120559199725654e-06,
+          "fraction_at_255": 0.05902096269326465
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.0033545416736590955,
+          "fraction_at_255": 0.042178938075051256
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.0
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.013287438679440313,
+          "fraction_at_255": 0.0016617658861900141
+        }
+      },
+      "preview": "jiandu_1116.png"
+    },
+    {
+      "id": "jiandu_1171",
+      "source_id": 1171,
+      "width": 439,
+      "height": 1483,
+      "input_hashes": {
+        "visible": "0c0b704a4dd75110d6250d75ad63868954cb52aeabcddb07a115592a55e1cbd9",
+        "infrared": "f1cdee1cebe83ed55c5d06edd5d78f71e1ad8d02707aa8c30c904dd3846ff5c6",
+        "visible_y": "a5b9ba079f2fc35602be1c3672d667c4502d61b474784c8b7b793e571826c380"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 6.571057565922835,
+          "standard_deviation": 67.63410381493993,
+          "average_gradient": 7.548971369750674,
+          "spatial_frequency": 14.92311968161254
+        },
+        "wavelet": {
+          "entropy": 6.914831059427595,
+          "standard_deviation": 68.2906483887363,
+          "average_gradient": 11.248791866707323,
+          "spatial_frequency": 21.466676158227152
+        },
+        "icig": {
+          "entropy": 7.019940793771406,
+          "standard_deviation": 68.19789483878847,
+          "average_gradient": 10.965528146214341,
+          "spatial_frequency": 20.788090744683224
+        },
+        "letters": {
+          "entropy": 6.074896233543797,
+          "standard_deviation": 80.18367331365125,
+          "average_gradient": 4.655983520151926,
+          "spatial_frequency": 13.06876644457928
+        }
+      },
+      "seconds": 66.15570409999054,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.006718900011037476,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.02405900000303518,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 61.94630440000037,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 3.9937475999904564,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_1171.png",
+              "sha256": "a5b9ba079f2fc35602be1c3672d667c4502d61b474784c8b7b793e571826c380"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 16,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 61.91469839999627,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 651037,
+            "material_pixels": 488687,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.675250232219696,
+            "flow_p95_pixels": 0.6763772964477539
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "a49e0c27bfa73082aff74d8e079a828aae09a62e3e398fae4570d2b44eacbf5a",
+        "icig_color": "3ea3e44274dc907f4b74e237e353021f3d7a779fd6627b8f5075bac5375ec319",
+        "letters": "20c4a3758f22702850080225e3bd79971fb5672de4af91823cdefa6922e8d532",
+        "letters_color": "01150553f0522bd41c11ca026dff4b457b877ad9abbb229715d5c803da635525"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 9.216066060761524e-06,
+          "fraction_at_255": 0.04484998548469595
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.01531198175628523,
+          "fraction_at_255": 0.016337013103709927
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 1.5360110101269206e-06
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.012233303688320837,
+          "fraction_at_255": 0.0004981795709511646
+        }
+      },
+      "preview": "jiandu_1171.png"
+    },
+    {
+      "id": "jiandu_1232",
+      "source_id": 1232,
+      "width": 223,
+      "height": 596,
+      "input_hashes": {
+        "visible": "d05be09ff6e24d2b7979f94d72159e4810c062a6d2b6fa6e3586ff3aa9da29f0",
+        "infrared": "219ebfa9509077adf9f1f7d78d4d776bd234237e9b7eeb6bbab8686c415d3241",
+        "visible_y": "4d8a0bf74b990449909c9a7cf0f960d448a3c63a8ac8fd3c23615ff5f1ac8d6a"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 3.6201906444789422,
+          "standard_deviation": 45.47672590512782,
+          "average_gradient": 2.1117785004095677,
+          "spatial_frequency": 8.046984341583707
+        },
+        "wavelet": {
+          "entropy": 3.87341016947338,
+          "standard_deviation": 45.7543108366278,
+          "average_gradient": 2.987508419593169,
+          "spatial_frequency": 10.851408669252171
+        },
+        "icig": {
+          "entropy": 3.9077591359816806,
+          "standard_deviation": 30.55545577301253,
+          "average_gradient": 2.879331826422105,
+          "spatial_frequency": 9.993030374988258
+        },
+        "letters": {
+          "entropy": 3.0055855544234156,
+          "standard_deviation": 65.68312649406636,
+          "average_gradient": 2.139568966830319,
+          "spatial_frequency": 11.24739592268945
+        }
+      },
+      "seconds": 11.46006359999592,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.0014603000017814338,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.0032445999968331307,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 10.675396700011333,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 0.6988213999866275,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_1232.png",
+              "sha256": "4d8a0bf74b990449909c9a7cf0f960d448a3c63a8ac8fd3c23615ff5f1ac8d6a"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 3,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 10.591520500005572,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 132908,
+            "material_pixels": 25383,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6731464862823486,
+            "flow_p95_pixels": 0.6764101386070251
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "6c90c3d60d7377a6ebd654b0b13660d8f964b13e56979f63ec66f7053597f3aa",
+        "icig_color": "a050a57d24af0cd234f1ff27fb622ee97b4d52fa5b78374c15496a593464e4a8",
+        "letters": "9a8bb066be481ac08b32aa31af9d0a7eb3cd057a37d44ee29f9064479e977cc8",
+        "letters_color": "a13975fd9e2da4b55f18eec0c78c86e98ed6225f5ff7bd841c3c478f7023f3d0"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.16055466939537125
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.00521914908558301,
+          "fraction_at_255": 0.00517651307671472
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.0
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.00047902809963784474,
+          "fraction_at_255": 0.0011060282300538718
+        }
+      },
+      "preview": "jiandu_1232.png"
+    },
+    {
+      "id": "jiandu_1455",
+      "source_id": 1455,
+      "width": 358,
+      "height": 2783,
+      "input_hashes": {
+        "visible": "c708f794858afd0742fc06f3c0a83b930dc1df0fe5f31ebbc39ed9ee1c5ef569",
+        "infrared": "1d2f5cddecfee6560a52ceabfbea6664b9a55f773bbebfa032020391e69e95db",
+        "visible_y": "03ca5a898943ada008ca3ceb0473f7a64df207a3ce1a1af95dc0707d908be645"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 6.456280140725164,
+          "standard_deviation": 51.10631547940097,
+          "average_gradient": 7.873167253756617,
+          "spatial_frequency": 14.754643574055693
+        },
+        "wavelet": {
+          "entropy": 6.789063924470298,
+          "standard_deviation": 52.05407008931483,
+          "average_gradient": 13.275343096175868,
+          "spatial_frequency": 24.491036965249
+        },
+        "icig": {
+          "entropy": 6.70285441602684,
+          "standard_deviation": 43.27719852513542,
+          "average_gradient": 9.912333513194818,
+          "spatial_frequency": 18.70828768896781
+        },
+        "letters": {
+          "entropy": 6.504236339472287,
+          "standard_deviation": 73.12368638733483,
+          "average_gradient": 4.2739124101412616,
+          "spatial_frequency": 12.553536634746862
+        }
+      },
+      "seconds": 123.70330770000874,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.01011560000188183,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.03870469999674242,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 116.70976179999707,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 6.6582259999995586,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_1455.png",
+              "sha256": "03ca5a898943ada008ca3ceb0473f7a64df207a3ce1a1af95dc0707d908be645"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 30,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 116.67596730000514,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 996314,
+            "material_pixels": 778630,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6754720211029053,
+            "flow_p95_pixels": 0.6765426993370056
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "4528664d6e5e20d0ea2d8165968052c0840617e565c8ebd04e119374f620ae67",
+        "icig_color": "cb30d56809737016effaa3a317b24c37e7e582f3fe6bbd5956cd9dc82de46ed6",
+        "letters": "b57ddcd85ce285906e4ab0d768bf2e0d236631efa6f5bc7420f79736b6fe58b1",
+        "letters_color": "823f1c3b4f4b38b9b49ac318e476e4ecb49b0bdf94bc0971e2d14da8f45dcca4"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 5.0184981843073566e-06,
+          "fraction_at_255": 0.019328243907041354
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.035216140025467205,
+          "fraction_at_255": 0.016926056109486234
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 1.2044395642337656e-05
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.027403676618683134,
+          "fraction_at_255": 0.002135872827241211
+        }
+      },
+      "preview": "jiandu_1455.png"
+    },
+    {
+      "id": "jiandu_1589",
+      "source_id": 1589,
+      "width": 223,
+      "height": 2569,
+      "input_hashes": {
+        "visible": "fec8bf6f3818615ef8b44677d238983c9d305e8a09c18cd86eebeab3079a6f31",
+        "infrared": "fafc18052b83257b1e1b49f10cc4fd69dbb08fe7f1ec26a9d43d09bf7c82fcd7",
+        "visible_y": "9211863edefd526fc4d6066231de4db4e03461f1064f08e9c20b5fb5ab7e885b"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 5.797101049277646,
+          "standard_deviation": 48.15191883533498,
+          "average_gradient": 5.914918787785731,
+          "spatial_frequency": 12.117969596336268
+        },
+        "wavelet": {
+          "entropy": 6.162030257020028,
+          "standard_deviation": 48.889602251853496,
+          "average_gradient": 9.838356983209817,
+          "spatial_frequency": 19.880525846286915
+        },
+        "icig": {
+          "entropy": 6.069953026399458,
+          "standard_deviation": 32.446784719542194,
+          "average_gradient": 7.7210011656581194,
+          "spatial_frequency": 15.434593598539148
+        },
+        "letters": {
+          "entropy": 5.996488813289409,
+          "standard_deviation": 77.2870328523086,
+          "average_gradient": 5.618276256981899,
+          "spatial_frequency": 14.855347794693191
+        }
+      },
+      "seconds": 56.117838799997116,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.005629500010400079,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.023496599998907186,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 52.77316319999227,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 3.1359281000040937,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_1589.png",
+              "sha256": "9211863edefd526fc4d6066231de4db4e03461f1064f08e9c20b5fb5ab7e885b"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 14,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 52.74102760000096,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 572887,
+            "material_pixels": 390669,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6750720739364624,
+            "flow_p95_pixels": 0.6766186952590942
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "da1dcf6f1031463114de5e9a48e2b1ac9f46b81d7a44b454cbc00918e955e21c",
+        "icig_color": "50c79cd8972fe855d09680ef3a22c77bcca8ed3fe1e79ce413cfba8a8c7eaa46",
+        "letters": "a533ab8d371ccaa301a86dd107802a1be5a0ea5d7449cf9ba3c6b4ed3d8c1edc",
+        "letters_color": "62f4114eb5909b8a202a3c35364756ff137f9a852a17de439f97ffca2b15d263"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.07212242553941703
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.017716117372768684,
+          "fraction_at_255": 0.011302985289129153
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.0
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.010866017207581949,
+          "fraction_at_255": 0.002013777004307423
+        }
+      },
+      "preview": "jiandu_1589.png"
+    },
+    {
+      "id": "jiandu_1993",
+      "source_id": 1993,
+      "width": 165,
+      "height": 361,
+      "input_hashes": {
+        "visible": "d3d8720c47809b0241afd4c0926ab492255a7905cb26a254b6315fcb97382f74",
+        "infrared": "0f90df131afa8d767d06df5ce83f086b1f6843385a0937936e05d1f26d8b5e86",
+        "visible_y": "94bde4a4c686c758f89fb15d70d87b61cb82d2bd78d3d96f4b03064e2dc170dc"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 5.7962650229072326,
+          "standard_deviation": 69.47300844130791,
+          "average_gradient": 7.496441642636283,
+          "spatial_frequency": 16.986207313135136
+        },
+        "wavelet": {
+          "entropy": 6.1374355784194154,
+          "standard_deviation": 70.20547936396379,
+          "average_gradient": 10.52098616556451,
+          "spatial_frequency": 23.07846092481716
+        },
+        "icig": {
+          "entropy": 6.265575518116167,
+          "standard_deviation": 71.31004964662272,
+          "average_gradient": 10.537548816755475,
+          "spatial_frequency": 23.041620473476417
+        },
+        "letters": {
+          "entropy": 5.3697112662934865,
+          "standard_deviation": 90.50268380695744,
+          "average_gradient": 5.788848563593683,
+          "spatial_frequency": 18.435741225409984
+        }
+      },
+      "seconds": 7.6414102999988245,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.00020389999554026872,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.0010485999955562875,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 7.308273800008465,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 0.2704389999998966,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_1993.png",
+              "sha256": "94bde4a4c686c758f89fb15d70d87b61cb82d2bd78d3d96f4b03064e2dc170dc"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 2,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 7.279635400002007,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 59565,
+            "material_pixels": 31555,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6742890477180481,
+            "flow_p95_pixels": 0.6766049861907959
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "12b8e1418c6bd6be2d249110ab4d34a352c67f37025db5d9c5ae49e1eabe7b92",
+        "icig_color": "e2ce13ece70e4f9df93477225d40b46fb82f6dc0a9a6cd063f2424587e30a934",
+        "letters": "b0f49bae2fe9254b634e5f3c5f334530de3946546bc6df3cf073d6dab01369a3",
+        "letters_color": "0cd58cf049c715fac87468d99f0792db678a162a962c213f089e9de611fe054f"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 0.0001007302946361118,
+          "fraction_at_255": 0.051489968941492485
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.02131005344301743,
+          "fraction_at_255": 0.03381739836033465
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 6.715352975740788e-05
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.043308430566048293,
+          "fraction_at_255": 0.0044433252189484875
+        }
+      },
+      "preview": "jiandu_1993.png"
+    },
+    {
+      "id": "jiandu_2116",
+      "source_id": 2116,
+      "width": 226,
+      "height": 710,
+      "input_hashes": {
+        "visible": "33a69a6f352afa470d5c633e263a8f8a1d7612386ea55ac8f58f74eb078e7b96",
+        "infrared": "e4a236ce11dfc2961087f9b3fecca998f045f363fe701f7725cf4b7da5812590",
+        "visible_y": "93f545bfacadac69b4b8841ead65dd68c331c27236a0beb253c98fe4848809be"
+      },
+      "metrics": {
+        "weighted": {
+          "entropy": 6.38314223120146,
+          "standard_deviation": 64.97997898206461,
+          "average_gradient": 6.805402554344236,
+          "spatial_frequency": 13.681749912702973
+        },
+        "wavelet": {
+          "entropy": 6.666718686506712,
+          "standard_deviation": 65.56973284599015,
+          "average_gradient": 10.149878542516717,
+          "spatial_frequency": 19.756627311737343
+        },
+        "icig": {
+          "entropy": 6.9260610073948925,
+          "standard_deviation": 55.44849177054787,
+          "average_gradient": 9.4542261889156,
+          "spatial_frequency": 18.1874084231792
+        },
+        "letters": {
+          "entropy": 6.2670434972796825,
+          "standard_deviation": 83.28456425665583,
+          "average_gradient": 4.200840874855809,
+          "spatial_frequency": 13.187495770876195
+        }
+      },
+      "seconds": 16.110184600009234,
+      "timings": [
+        {
+          "tool": "weighted_average_fusion",
+          "seconds": 0.0017886999994516373,
+          "details": "Completed"
+        },
+        {
+          "tool": "wavelet_fusion",
+          "seconds": 0.0040526999946450815,
+          "details": "Completed"
+        },
+        {
+          "tool": "icig_fusion",
+          "seconds": 15.178618300007656,
+          "details": "Checkpoint SHA256: 6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+        },
+        {
+          "tool": "letters_fusion",
+          "seconds": 0.828196399990702,
+          "details": "Checkpoint SHA256: 16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+        }
+      ],
+      "models": {
+        "icig": {
+          "checkpoint": {
+            "name": "model.pth",
+            "sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc"
+          },
+          "auxiliary_inputs": {
+            "visible_y": {
+              "name": "jiandu_2116.png",
+              "sha256": "93f545bfacadac69b4b8841ead65dd68c331c27236a0beb253c98fe4848809be"
+            }
+          },
+          "metadata": {
+            "method": "icig",
+            "model": "SparseGrFormer v3",
+            "sparse_budget": 0.7,
+            "device": "cpu",
+            "tile_size": 256,
+            "overlap": 64,
+            "tiles": 4,
+            "input_range": [
+              0,
+              255
+            ],
+            "visible_luminance": "provided",
+            "color_restoration": "visible chroma and visible blur plus 1.2 times fused detail",
+            "seconds": 15.149964199998067,
+            "weights_sha256": "6f32ba4b019faa388e6ddf58b3e3c83c16183dea319d3654b27a04a3262f87fc",
+            "threads": 2
+          }
+        },
+        "letters": {
+          "checkpoint": {
+            "name": "fusion.pt",
+            "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
+          },
+          "auxiliary_inputs": {},
+          "metadata": {
+            "implementation": "letters_idrnet_with_boundary_refinement",
+            "weights_name": "fusion.pt",
+            "weights_sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0",
+            "config_sha256": "5b7f524b46d962ebf50465e3613c2267a79c23767d424a22c95b53e5c9ad0d0f",
+            "model_config": {
+              "base_channels": 32,
+              "flow_channels": 64
+            },
+            "device": "cpu",
+            "torch_threads": 2,
+            "input_color_order": "RGB",
+            "output_gray_conversion": "Pillow RGB to L",
+            "material_source": "visible_color",
+            "valid_pixels": 160460,
+            "material_pixels": 117622,
+            "learned_flow_enabled": true,
+            "refinement": {
+              "anchor": {
+                "ink_threshold": 0.42,
+                "ink_blur": 5,
+                "ink_gain": 0.22,
+                "ink_darken": 0.035,
+                "ink_gamma": 0.0,
+                "bg_rgb_keep": 0.85,
+                "chroma_from_rgb": 1.0
+              },
+              "refinement": {
+                "gamma": 1.5,
+                "neutral": 0.3
+              },
+              "boundary_protection": {
+                "width_at256": 16,
+                "strength": 1.0
+              },
+              "transverse_reference": {
+                "mode": "soft",
+                "width": 16
+              },
+              "masked_context": {
+                "width": 16,
+                "strength": 1.0
+              },
+              "color_transfer": {
+                "mode": "VIS_RGB_chroma_at_fused_luma",
+                "scope": "all_observed_material",
+                "integer_gray_lock": [
+                  "PIL",
+                  "OpenCV"
+                ],
+                "out_of_gamut": "compress chroma then fallback ifdualgrayroundingfails"
+              }
+            },
+            "flow_mean_pixels": 0.6752120852470398,
+            "flow_p95_pixels": 0.6765837073326111
+          }
+        }
+      },
+      "versions": {
+        "fusion-agent": "0.1.0",
+        "numpy": "2.2.6",
+        "opencv-python-headless": "4.14.0.94",
+        "PyWavelets": "1.10.0",
+        "pydantic": "2.13.5",
+        "torch": "2.7.1+cpu",
+        "scipy": "1.13.1",
+        "einops": "0.8.2",
+        "Pillow": "12.3.0"
+      },
+      "output_hashes": {
+        "icig": "e552fc4585f1ea4220ba4897d788197006e786cbe90a9f2d2549d3f0c71e80b8",
+        "icig_color": "ec47c306d81341ac0814c87e58d26aa7726c8d18e9a20df4032d870e69f145af",
+        "letters": "19eb8f3a46862644e14fedbfae438ac758228ed267cc90c03b25b2e55f3860e6",
+        "letters_color": "59a03f25a747284bf8328690224b0d44529b6b1a96d6b7c89beccf3af7683108"
+      },
+      "clipping": {
+        "icig": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.022684781253895052
+        },
+        "icig_color": {
+          "fraction_at_zero": 0.02951722132203249,
+          "fraction_at_255": 0.012919107565748473
+        },
+        "letters": {
+          "fraction_at_zero": 0.0,
+          "fraction_at_255": 0.00016203415181353608
+        },
+        "letters_color": {
+          "fraction_at_zero": 0.012730067721966014,
+          "fraction_at_255": 0.002698491835971582
+        }
+      },
+      "preview": "jiandu_2116.png"
+    }
+  ]
+}

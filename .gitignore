@@ -16,3 +16,9 @@ build/
 *.onnx
 datasets/
 *.log
+
+# User-supplied research archives, full dataset and local checkpoints.
+/ICIGCode.zip
+/lettersCode.zip
+/test/
+/weights/
