@@ -75,6 +75,9 @@ The earlier browser-automation limitation was resolved during the Jiandu update 
   Gradio callback matches batch sample 517; wheel includes all nine PRCV files and no checkpoints.
   Static package contains 80 allowlisted files / 24,381,391 bytes, with five-column comparisons.
 - Details: docs/RESEARCH_METHODS.md, docs/JIANDU_RESULTS.md and docs/research-validation/prcv-parity.json.
+- Published code commit 0119b76 with successful remote CI. The user explicitly approved publishing
+  the new PRCV results to the existing Space; revision ed32025b is RUNNING. All 80 repository files
+  and 79 served files match the review stage, and a real browser shows PRCV images/metrics.
 
 ## Online deployment update
 - User requested an online demonstration and redistributable public examples.

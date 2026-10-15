@@ -20,6 +20,15 @@
   four-method and new PRCV batches retain separate settings/versions/durations. Static staging
   has 80 allowlisted files / 24,381,391 bytes. Browser neural output remains precomputed.
 - No CUDA, training, independent registration/recognition-quality benchmark or live paid API test.
+- Public release verified: [GitHub CI](https://github.com/hjt991202/fusion-agent/actions/runs/38694898556)
+  passed for code commit `0119b76`. Standard Git HTTPS was unavailable; the Git Data API published
+  the exact verified tree/commit with a non-force update after checking the remote parent.
+- After explicit approval for the new PRCV material, the existing static Space was updated to
+  [ed32025b](https://huggingface.co/spaces/hjt991202/fusion-agent/commit/ed32025bffdba803777c60c5d7ae1ba9764734b0).
+  Runtime is RUNNING; anonymous checks matched all 80 repository files and 79 served files to
+  the reviewed package (only the platform-injected index.html script is removed for comparison).
+  A real browser refresh showed the three-method heading, five-column preview, all five measured
+  metric rows and separate-run timing records on sample 843.
 
 ## Jiandu integration — 2026-10-15
 
