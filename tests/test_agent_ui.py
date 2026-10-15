@@ -1,10 +1,12 @@
 import asyncio
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
 
+from fusion_agent.models.runtime import ModelOptions
 from fusion_agent.schemas import FusionPlan
 from fusion_agent.tools.image_io import save_image
 
@@ -66,7 +68,50 @@ def test_ui_callback(inputs, tmp_path):
     outputs = run_demo(*map(str, inputs), "Compare", "both", False, False, output=tmp_path)
     assert len(outputs[0]) == 2 and len(outputs[1]) == 2
     assert Path(outputs[-1]).is_file()
-    assert build_app().get_config_file()["components"]
+    components = build_app().get_config_file()["components"]
+    methods = next(
+        component for component in components if component["props"].get("label") == "Methods"
+    )
+    assert "prcv" in [value for _, value in methods["props"]["choices"]]
+
+
+def test_prcv_agent_checkpoint_options_stay_local(inputs, tmp_path, monkeypatch):
+    pytest.importorskip("agents")
+    from agents.tool_context import ToolContext
+
+    from fusion_agent.agents import coordinator
+
+    options = ModelOptions(prcv_weights=str(tmp_path / "private-model.pth"))
+    plan = FusionPlan(methods=["prcv"])
+    captured = {}
+
+    def local_workflow(*args, **kwargs):
+        captured.update(kwargs)
+        return SimpleNamespace(metrics={}, recommendation="prcv", reason="Mock", limitations=[])
+
+    monkeypatch.setattr(coordinator, "run_workflow", local_workflow)
+    agent, state = coordinator.build_agent(*inputs, tmp_path, "compare", plan, options)
+    inspect_tool, execute_tool = agent.tools
+    assert "prcv_weights" not in json.dumps(execute_tool.params_json_schema)
+    assert options.prcv_weights not in agent.instructions
+
+    async def exercise():
+        context = ToolContext(
+            context=None,
+            tool_name="execute_fusion",
+            tool_call_id="offline-prcv",
+            tool_arguments="{}",
+        )
+        await inspect_tool.on_invoke_tool(context, "{}")
+        response = await execute_tool.on_invoke_tool(
+            context, json.dumps({"plan": plan.model_dump()})
+        )
+        assert json.loads(response)["recommendation"] == "prcv"
+        assert options.prcv_weights not in response
+
+    asyncio.run(exercise())
+    assert captured["model_options"] is options
+    assert state["report"] is not None
 
 
 def test_ui_missing_input():

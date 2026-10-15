@@ -24,9 +24,11 @@ The earlier Sites alternative remained unpublished; the chosen deployment uses t
 
 Browser scope: same-size pairs, weighted average and one-level symmetric Haar, four metrics,
 task notes, input hashes, tool timings, PNG and report downloads. The expanded source also shows
-15 precomputed ICIG/letters comparisons with full-resolution measurements and shared crops.
-Selecting a Jiandu example can load its original RGB/IR into browser baselines. Neither learned
-model runs in the static browser. No online Agent or resizing.
+15 precomputed ICIG/letters/PRCV comparisons with full-resolution measurements and shared crops.
+Selecting a Jiandu example can load its original RGB/IR into browser baselines. The three learned
+models do not run in the static browser. No online Agent or resizing. When adding PRCV incrementally,
+the manifest retains the original four-method run and new PRCV run separately; displayed times
+are measured across separate invocations, not a single contemporaneous performance benchmark.
 PNG/JPEG/BMP/WebP up to 16 MiB and four million pixels. Transparent images are rejected;
 convert high-bit-depth input to 8-bit explicitly before use. Canvas color/decoding may differ
 from OpenCV. Tests compare grayscale kernels: weighted output is exact, Haar output may differ
@@ -68,7 +70,7 @@ impose account eligibility or plan requirements; the script never buys a plan.
 
 - Nineteen clickable local examples: three TNO, one synthetic and fifteen Jiandu pairs.
 - Local Jiandu examples also load their prepared VIS_Y and clear previous masks.
-- Optional local `research` extra and checkpoints enable ICIG/letters; the hosted Python
+- Optional local `research` extra and checkpoints enable ICIG/letters/PRCV; the hosted Python
   preparation installs only `ui` by default, so neural models need explicit additional setup.
 - Uploads are sent to the hosted server. Do not upload confidential research data.
 - One fusion request executes at a time; queue capacity is eight.

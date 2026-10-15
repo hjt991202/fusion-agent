@@ -12,7 +12,7 @@
 .showcase-controls button{min-height:43px}
 .showcase .meta{padding:0;margin:14px 0;min-height:22px}
 .showcase-figure{margin:0;border:1px solid #e0e6ee;border-radius:10px;overflow:hidden;background:#edf1f7}
-.showcase-figure img{display:block;width:100%;height:auto;aspect-ratio:1000/740;object-fit:contain}
+.showcase-figure img{display:block;width:100%;height:auto;aspect-ratio:1250/740;object-fit:contain}
 .showcase-figure figcaption{padding:12px 15px;font-size:12px;line-height:1.7;color:#53647b;background:#f8faff}
 .showcase .table-wrap{margin-top:16px}
 .showcase th,.showcase td{white-space:nowrap;padding:12px 14px}

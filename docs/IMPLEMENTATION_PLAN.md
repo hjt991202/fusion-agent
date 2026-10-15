@@ -33,7 +33,7 @@ For future changes follow AGENTS.md and use project-verification before each com
 
 ## Known limits
 No live paid API call or real sensor benchmark. Offline SDK tests do not prove model access.
-Two pretrained research adapters are now implemented; no training, validated geometric registration
+Three pretrained research adapters are now implemented; no training, validated geometric registration
 or reference metrics. CPU verified, CUDA untested. Static browser neural results are precomputed.
 The earlier browser-automation limitation was resolved during the Jiandu update below.
 
@@ -60,6 +60,21 @@ The earlier browser-automation limitation was resolved during the Jiandu update 
 - Complete: code commit be5b72c passed all three remote CI jobs. The existing free static Space
   is RUNNING at a0f2b7f; 80 repository files and 79 served files match the reviewed package.
   Live browser verification confirmed the 15-pair gallery and switching between 843 and 517.
+
+## PRCV integration update (2026-10-15)
+- The user supplied JDFusion.zip and requested adding its new method to this existing project.
+  Its ICIG/letters archives exactly match the earlier sources; PRCV_Fusion_submit.zip is new.
+- Added the optional prcv adapter, original configuration, strict local checkpoint importer,
+  CLI/Gradio selection and bounded Agent dispatch. research selects three methods; all selects five.
+- Source-resolution RGB and gray output match fresh original PRCV runs exactly on two samples.
+  Source parameter flags and full attention mode are retained; VFC is the active displacement.
+- Reused and hash-verified the original 15 pairs and earlier four-method outputs; completed PRCV
+  on all 15, then independently recomputed all 75 metric records and checked 120 output PNG hashes.
+  Old/new run evidence stays separate. No new archive images or weights are published.
+- Local verification: 172 tests, Ruff, CLI, JS syntax, data and candidate audit passed. Real PRCV
+  Gradio callback matches batch sample 517; wheel includes all nine PRCV files and no checkpoints.
+  Static package contains 80 allowlisted files / 24,381,391 bytes, with five-column comparisons.
+- Details: docs/RESEARCH_METHODS.md, docs/JIANDU_RESULTS.md and docs/research-validation/prcv-parity.json.
 
 ## Online deployment update
 - User requested an online demonstration and redistributable public examples.

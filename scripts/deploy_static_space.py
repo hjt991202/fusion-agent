@@ -3,9 +3,30 @@
 import argparse
 import hashlib
 import json
+import math
 import re
 import shutil
 from pathlib import Path
+
+
+def validate_execution(pair: dict) -> None:
+    methods = {"weighted", "wavelet", "icig", "letters", "prcv"}
+    if set(pair.get("metrics", {})) != methods:
+        raise ValueError("Showcase requires measured results for all five methods")
+    runs = pair.get("runs", [])
+    recorded = [method for run in runs for method in run.get("methods", [])]
+    if len(recorded) != 5 or set(recorded) != methods:
+        raise ValueError("Showcase run evidence does not cover five distinct methods")
+    for run in runs:
+        if (
+            not math.isfinite(run["seconds"])
+            or run["seconds"] < 0
+            or run["methods"] != run["config"]["plan"]["methods"]
+            or run["versions"] != run["config"]["versions"]
+        ):
+            raise ValueError("Showcase run timing/configuration evidence is inconsistent")
+    if pair.get("timing_scope") == "separate_runs" and ("seconds" in pair or len(runs) < 2):
+        raise ValueError("Separate runs cannot claim one combined wall time")
 
 
 def prepare_static(root: Path, stage: Path) -> None:
@@ -49,6 +70,7 @@ def prepare_static(root: Path, stage: Path) -> None:
             image_files.append(relative)
     previews = []
     for pair in results["pairs"]:
+        validate_execution(pair)
         preview = showcase / pair["preview"]
         if not preview.is_file():
             raise ValueError("Missing measured showcase preview")
@@ -74,8 +96,10 @@ def prepare_static(root: Path, stage: Path) -> None:
         "# FusionAgent · 在线图像融合\n\n"
         "Select a sample pair and run both fusion baselines in your browser. "
         "Uploaded files never leave your browser. No backend or API key required. "
-        "ICIG and letters results for 15 Jiandu pairs were computed in Python beforehand; "
-        "the browser does not execute these neural models.\n\n"
+        "ICIG, letters and PRCV results for 15 Jiandu pairs were computed in Python beforehand; "
+        "the browser does not execute these neural models. Incremental PRCV and earlier runs "
+        "retain separate timing/version evidence; they are not one contemporaneous "
+        "speed benchmark.\n\n"
         "Source: https://github.com/hjt991202/fusion-agent\n\n"
         "TNO images: Alexander Toet / TNO, Soesterberg, The Netherlands, CC BY 4.0, "
         "https://doi.org/10.6084/m9.figshare.1008029.v2 . "

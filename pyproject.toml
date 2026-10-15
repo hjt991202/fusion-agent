@@ -23,6 +23,7 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "fusion_agent.models.letters" = ["config.json"]
+"fusion_agent.models.prcv" = ["config.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

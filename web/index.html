@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="查看 15 对简牍图像的 ICIG 与 letters 实测演示，或在浏览器中运行加权平均和小波融合。">
+  <meta name="description" content="查看 15 对简牍图像的 ICIG、letters 与 PRCV 实测演示，或在浏览器中运行加权平均和小波融合。">
   <title>FusionAgent · 在线图像融合</title><link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,14 +11,14 @@
 <main>
   <div class="intro"><div><h1>对比融合，观察细节。</h1><p>查看简牍研究方法的实测结果，再用浏览器基线对比原图。也可以上传自己的已配准图像。</p></div><span class="badge">无需登录 · 无需 API 密钥</span></div>
   <section class="showcase" aria-labelledby="showcase-title">
-    <div class="showcase-heading"><div><p class="eyebrow">JIANDU · 15 对简牍样例</p><h2 id="showcase-title">ICIG 与 letters 融合演示</h2></div><span class="badge precomputed">预先计算的模型结果</span></div>
-    <p class="showcase-description">保留原始尺寸推理；下图展示可见光、红外和两种方法的彩色结果，以及同位置细节。浏览器不执行这两个深度模型。</p>
+    <div class="showcase-heading"><div><p class="eyebrow">JIANDU · 15 对简牍样例</p><h2 id="showcase-title">ICIG、letters 与 PRCV 融合演示</h2></div><span class="badge precomputed">预先计算的模型结果</span></div>
+    <p class="showcase-description">保留原始尺寸推理；下图展示可见光、红外和三种方法的彩色结果，以及同位置细节。浏览器不执行这三个深度模型。</p>
     <div class="showcase-controls"><label for="showcase-select">选择简牍样例<select id="showcase-select" disabled><option>正在读取演示清单…</option></select></label><button id="showcase-load" class="secondary" disabled>载入原图，运行浏览器基线 ↓</button></div>
     <p id="showcase-status" class="meta" role="status" aria-live="polite">正在读取已计算结果…</p>
     <div id="showcase-content" hidden>
-      <figure class="showcase-figure"><a id="showcase-preview-link" target="_blank" rel="noreferrer"><img id="showcase-preview" width="1000" height="740" alt="简牍图像融合对照与同位置细节"></a><figcaption>从左到右：可见光、红外、ICIG 彩色结果、letters 彩色结果。上方缩放展示全图；下方为相同源坐标的局部裁剪。点击查看大图。</figcaption></figure>
+      <figure class="showcase-figure"><a id="showcase-preview-link" target="_blank" rel="noreferrer"><img id="showcase-preview" width="1250" height="740" alt="简牍图像融合对照与同位置细节"></a><figcaption>从左到右：可见光、红外、ICIG 彩色结果、letters 彩色结果、PRCV 彩色结果。上方缩放展示全图；下方为相同源坐标的局部裁剪。点击查看大图。</figcaption></figure>
       <div class="table-wrap"><table><caption>原始尺寸实测 · 8-bit 灰度指标</caption><thead><tr><th>方法</th><th>信息熵</th><th>标准差</th><th>平均梯度</th><th>空间频率</th><th>执行秒数</th></tr></thead><tbody id="showcase-metrics"></tbody></table></div>
-      <p class="note">ICIG 指标来自其原始融合灰度输出；letters 指标来自最终彩色结果转灰度。图中彩色预览与指标的计算对象有所不同。指标更高不代表整体质量更好；这些选择性样例不是基准测试，训练/测试独立性尚未确认。</p>
+      <p class="note">ICIG 指标来自其原始融合灰度输出；letters 与 PRCV 指标来自最终彩色结果转灰度。图中彩色预览与指标的计算对象有所不同。指标更高不代表整体质量更好；这些选择性样例不是基准测试，训练/测试独立性尚未确认。各方法耗时保留其实际运行记录；增量结果来自不同批次，不能当作同批速度基准。</p>
       <div class="showcase-links"><a id="showcase-visible" target="_blank" rel="noreferrer">可见光原图 ↗</a><a id="showcase-infrared" target="_blank" rel="noreferrer">红外原图 ↗</a><a href="showcase/manifest.json">完整实测记录</a><a href="https://github.com/hjt991202/fusion-agent/blob/main/docs/RESEARCH_METHODS.md" target="_blank" rel="noreferrer">方法与复现说明 ↗</a></div>
     </div>
     <p class="showcase-license">简牍样例由项目所有者提供并授权本项目演示，不适用代码 MIT 或 TNO 的 CC BY 许可。<a href="samples/jiandu/README.md">来源与使用范围</a> · <a href="samples/jiandu/manifest.json">原图哈希清单</a></p>

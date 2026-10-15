@@ -1,0 +1,30 @@
+[
+  {
+    "file": "memory.py",
+    "normalized_semantic_ast_equal": true
+  },
+  {
+    "file": "model/architecture.py",
+    "normalized_semantic_ast_equal": true
+  },
+  {
+    "file": "model/flow.py",
+    "normalized_semantic_ast_equal": true
+  },
+  {
+    "file": "model/manifold_registration.py",
+    "normalized_semantic_ast_equal": true
+  },
+  {
+    "file": "model/stroke_refiner.py",
+    "normalized_semantic_ast_equal": true
+  },
+  {
+    "file": "model/vfc_registration.py",
+    "normalized_semantic_ast_equal": true
+  },
+  {
+    "file": "model/__init__.py",
+    "normalized_semantic_ast_equal": true
+  }
+]

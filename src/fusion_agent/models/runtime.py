@@ -16,13 +16,14 @@ class ModelOptions(Contract):
     threads: int = Field(default=2, ge=1, le=32)
     icig_weights: str | None = None
     letters_weights: str | None = None
+    prcv_weights: str | None = None
     visible_y: str | None = None
     valid_mask: str | None = None
     material_mask: str | None = None
     material_mode: Literal["visible", "valid"] = "visible"
 
     def checkpoint(self, method: str) -> Path:
-        filename = {"icig": "model.pth", "letters": "fusion.pt"}[method]
+        filename = {"icig": "model.pth", "letters": "fusion.pt", "prcv": "model.pth"}[method]
         configured = getattr(self, f"{method}_weights") or os.getenv(
             f"FUSION_{method.upper()}_WEIGHTS"
         )

@@ -13,8 +13,8 @@ from fusion_agent.workflow import run_workflow
 
 def test_method_groups_and_configuration():
     assert selected_methods("both") == ["weighted", "wavelet"]
-    assert selected_methods("research") == ["icig", "letters"]
-    assert len(selected_methods("all")) == 4
+    assert selected_methods("research") == ["icig", "letters", "prcv"]
+    assert len(selected_methods("all")) == 5
     with pytest.raises(ValueError):
         selected_methods("arbitrary_module")
     with pytest.raises(ValueError):
@@ -99,8 +99,9 @@ def test_agent_fallback_preserves_local_model_options(tmp_path, monkeypatch):
 
 @pytest.mark.parametrize("color_ir", [False, True])
 @pytest.mark.parametrize("resize", [False, True])
-def test_letters_preserves_source_color_and_expands_gray_visible(
-    tmp_path, monkeypatch, color_ir, resize
+@pytest.mark.parametrize("method", ["letters", "prcv"])
+def test_models_preserve_source_color_and_expand_gray_visible(
+    tmp_path, monkeypatch, color_ir, resize, method
 ):
     import cv2
 
@@ -123,7 +124,10 @@ def test_letters_preserves_source_color_and_expands_gray_visible(
         if resize:
             expected = cv2.resize(expected, (7, 5), interpolation=cv2.INTER_LINEAR)
         np.testing.assert_array_equal(i, expected)
-        assert kwargs["material_mode"] == "valid"
+        if method == "letters":
+            assert kwargs["material_mode"] == "valid"
+        else:
+            assert "material_mode" not in kwargs
         return {"gray": visible, "color": v, "metadata": {"device": "mock"}}
 
     monkeypatch.setattr(workflow, "load_adapter", lambda _: SimpleNamespace(fuse=fuse))
@@ -137,7 +141,10 @@ def test_letters_preserves_source_color_and_expands_gray_visible(
         tmp_path / "v.png",
         tmp_path / "i.png",
         tmp_path / "runs",
-        plan=FusionPlan(methods=["letters"], resize=resize),
-        model_options=ModelOptions(letters_weights=str(checkpoint), material_mode="valid"),
+        plan=FusionPlan(methods=[method], resize=resize),
+        model_options=ModelOptions(**{f"{method}_weights": str(checkpoint)}, material_mode="valid"),
     )
-    assert set(report.metrics) == {"letters"}
+    assert set(report.metrics) == {method}
+    config = json.loads(Path(report.files["config"]).read_text())
+    assert f"{method}_weights" not in config["preprocessing"]["model_options"]
+    assert len(config["models"][method]["checkpoint"]["sha256"]) == 64

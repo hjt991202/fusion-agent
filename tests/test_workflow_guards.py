@@ -7,7 +7,8 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from fusion_agent.schemas import FusionPlan
+from fusion_agent.models.runtime import ModelOptions
+from fusion_agent.schemas import FusionPlan, selected_methods
 from fusion_agent.tools.fusion import wavelet_fusion
 from fusion_agent.tools.image_io import save_image
 
@@ -21,6 +22,60 @@ def test_wavelet_signed_details():
     visible = np.array([[0, 100], [0, 100]], np.uint8)
     infrared = np.full((2, 2), 50, np.uint8)
     np.testing.assert_array_equal(wavelet_fusion(visible, infrared), visible)
+
+
+def test_prcv_groups_and_cli_preserve_local_checkpoint_option(tmp_path, monkeypatch):
+    from fusion_agent import cli
+
+    assert selected_methods("both") == FusionPlan().methods == ["weighted", "wavelet"]
+    assert selected_methods("research") == ["icig", "letters", "prcv"]
+    assert selected_methods("all") == ["weighted", "wavelet", "icig", "letters", "prcv"]
+    checkpoint = str(tmp_path / "private-model.pth")
+    captured = {}
+
+    def run_workflow(*args, **kwargs):
+        captured["plan"] = args[4]
+        captured.update(kwargs)
+        return SimpleNamespace(files={"report": "mock-report.md"})
+
+    monkeypatch.setattr(cli, "run_workflow", run_workflow)
+    assert (
+        cli.main(
+            [
+                "--visible",
+                "v.png",
+                "--infrared",
+                "i.png",
+                "--method",
+                "prcv",
+                "--prcv-weights",
+                checkpoint,
+            ]
+        )
+        == 0
+    )
+    assert captured["plan"].methods == ["prcv"]
+    assert captured["model_options"].prcv_weights == checkpoint
+    with pytest.raises(ValueError):
+        FusionPlan(methods=["prcv"], prcv_weights=checkpoint)
+
+
+def test_prcv_checkpoint_resolution_precedence(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.delenv("FUSION_PRCV_WEIGHTS", raising=False)
+    default = Path("weights/prcv/model.pth")
+    default.parent.mkdir(parents=True)
+    default.write_bytes(b"mock default; not loaded")
+    assert ModelOptions().checkpoint("prcv") == default
+    environment = tmp_path / "environment.pth"
+    environment.write_bytes(b"mock environment; not loaded")
+    monkeypatch.setenv("FUSION_PRCV_WEIGHTS", str(environment))
+    assert ModelOptions().checkpoint("prcv") == environment
+    explicit = tmp_path / "explicit.pth"
+    explicit.write_bytes(b"mock explicit; not loaded")
+    assert ModelOptions(prcv_weights=str(explicit)).checkpoint("prcv") == explicit
+    with pytest.raises(ValueError, match="FUSION_PRCV_WEIGHTS"):
+        ModelOptions(prcv_weights=str(tmp_path / "missing.pth")).checkpoint("prcv")
 
 
 def test_audit_unpaired_and_corrupt(tmp_path):
@@ -70,6 +125,7 @@ def test_agent_method_and_resize_guards(tmp_path):
         await agent.tools[0].on_invoke_tool(context, "{}")
         for plan, error in [
             (FusionPlan(methods=["wavelet"]), "methods exceed"),
+            (FusionPlan(methods=["prcv"]), "methods exceed"),
             (FusionPlan(methods=["weighted"], resize=True), "Resizing requires"),
         ]:
             message = await agent.tools[1].on_invoke_tool(

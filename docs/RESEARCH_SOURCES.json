@@ -124,6 +124,91 @@
           "sha256": "16e61b98ff9f2c95a97f553ebd402f2b93faa37373621f494d6d92fa264a8fc0"
         }
       ]
+    },
+    {
+      "archive": "PRCV_Fusion_submit.zip",
+      "sha256": "9be3a51b7f5342899d8efc2566ae194e064dbb9f6317a1989352bdc200f7c5f1",
+      "files": [
+        {
+          "path": "PRCV_Fusion_submit/README.md",
+          "bytes": 3180,
+          "sha256": "4a9e93834a2b6d83633128b97dcbf6486bf36be5bc189efa07634acba83feaf7"
+        },
+        {
+          "path": "PRCV_Fusion_submit/config.json",
+          "bytes": 383,
+          "sha256": "42b281bd9dba2f1a4f1f53f4c471cf3ebf6a755d30d633ebc5d5e3c1a74fe76d"
+        },
+        {
+          "path": "PRCV_Fusion_submit/infer.py",
+          "bytes": 9774,
+          "sha256": "9538310851b09e4d2ceabbda82c3814ca9de869f0ed7b53b42ca354d474a52d0"
+        },
+        {
+          "path": "PRCV_Fusion_submit/memory.py",
+          "bytes": 1807,
+          "sha256": "793218bcf1593786f1720ad3bc3ccd1b54c345751c51bb39272c4a3ae24b58a5"
+        },
+        {
+          "path": "PRCV_Fusion_submit/model/__init__.py",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "PRCV_Fusion_submit/model/architecture.py",
+          "bytes": 63843,
+          "sha256": "7cdf56cb7cbc595471590dfcfdaa9fdd2fe7e536b65806b6bb83daeab0c6d018"
+        },
+        {
+          "path": "PRCV_Fusion_submit/model/flow.py",
+          "bytes": 2836,
+          "sha256": "842ff8e84167f06769ff6aea0f0076e0342bcf0c1d49186bd052df8c39322054"
+        },
+        {
+          "path": "PRCV_Fusion_submit/model/manifold_registration.py",
+          "bytes": 21761,
+          "sha256": "e872496b9b9687b733f68c007bbde70c1e3a6b516e707fe7afbf02b26a2dfee4"
+        },
+        {
+          "path": "PRCV_Fusion_submit/model/stroke_refiner.py",
+          "bytes": 4821,
+          "sha256": "28b015f61de1633c00ef1f0bbd5ff8b6ca14f8be2630f545819dfd318714fa78"
+        },
+        {
+          "path": "PRCV_Fusion_submit/model/vfc_registration.py",
+          "bytes": 5741,
+          "sha256": "cbbbc0a2df61041cc32536e735f3fa5eb551cf05668301a9a84cdbf70458d3e9"
+        },
+        {
+          "path": "PRCV_Fusion_submit/requirements.txt",
+          "bytes": 44,
+          "sha256": "826a65872223cbeebdd810d0141318572e461a0a38146d12e24027086bf1bf52"
+        },
+        {
+          "path": "PRCV_Fusion_submit/weights/model.pth",
+          "bytes": 10594234,
+          "sha256": "eb430bf79a58a5c9987e6d2ce6dddf54c5fea7e281a78e7cdcd95b721982551d"
+        }
+      ]
     }
-  ]
+  ],
+  "container_bundle": {
+    "archive": "JDFusion.zip",
+    "sha256": "763eb507d4adcbfea03d78e7e6519700f1089724e47b27b7bcd305469ea8e707",
+    "members": [
+      {
+        "archive": "JDFusion/ICIGCode.zip",
+        "sha256": "183852d60d5bff38da3703dee463e61c20bfb9ee07b7b63d29540bc369c8b4e3"
+      },
+      {
+        "archive": "JDFusion/lettersCode.zip",
+        "sha256": "c08030e58241d4779cbee57dc185edb0f6ca79a06b2ac6fe2bdd8a72fdda1cb9"
+      },
+      {
+        "archive": "JDFusion/PRCV_Fusion_submit.zip",
+        "sha256": "9be3a51b7f5342899d8efc2566ae194e064dbb9f6317a1989352bdc200f7c5f1"
+      }
+    ],
+    "note": "ICIGCode.zip and lettersCode.zip are byte-identical to the previously integrated archives; PRCV_Fusion_submit.zip adds the third research method. No new archive example images are published."
+  }
 }

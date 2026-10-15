@@ -1,0 +1,146 @@
+{
+  "method": "PRCV IDRNet",
+  "comparison": "Reviewed original infer.py run versus package adapter; source resolution; no external masks; CPU float32, TF32 disabled; threads2; full attention; window_batch4",
+  "python": "3.12.4",
+  "torch": "2.7.1+cpu",
+  "numpy": "2.2.6",
+  "pairs": [
+    {
+      "pair": "new_2116",
+      "size": [
+        226,
+        710
+      ],
+      "source_seconds": 5.627315099991392,
+      "adapted_metadata": {
+        "implementation": "PRCV IDRNet with VFC and full multi-manifold attention",
+        "weights_name": "model.pth",
+        "weights_sha256": "eb430bf79a58a5c9987e6d2ce6dddf54c5fea7e281a78e7cdcd95b721982551d",
+        "config_sha256": "42b281bd9dba2f1a4f1f53f4c471cf3ebf6a755d30d633ebc5d5e3c1a74fe76d",
+        "model_config": {
+          "base_channels": 32,
+          "flow_channels": 64,
+          "mma_embed_dim": 64,
+          "mma_heads": 4,
+          "mma_window_size": 64,
+          "mma_patch_size": 4,
+          "fusion_blocks": 2,
+          "vfc_enabled": true,
+          "vfc_grid_size": 16,
+          "vfc_search_radius": 4,
+          "vfc_kernel_sigma": 32.0,
+          "vfc_max_disp": 3.0,
+          "vfc_iters": 3,
+          "vfc_topk": 128
+        },
+        "device": "cpu",
+        "torch_threads": 2,
+        "window_batch": 4,
+        "attention_mode": "full",
+        "input_color_order": "RGB",
+        "infrared_conversion": "Pillow RGB to L; grayscale unchanged",
+        "input_normalization": "float32 divided by 255",
+        "output_quantization": "clip to [0, 1], multiply by 255, truncate to uint8",
+        "output_gray_conversion": "Pillow RGB to L of final color",
+        "registration": "Source VFC infrared displacement; applied affine is identity; learned raw flow and stroke refinement flow are zero in this implementation",
+        "external_mask": false,
+        "tf32": false,
+        "seconds": 5.465172199998051,
+        "flow_mean_pixels": 2.7628533840179443,
+        "flow_p95_pixels": 4.074270248413086,
+        "flow_max_abs_component_pixels": 3.0
+      },
+      "max_abs_pixel_error": 0,
+      "different_channel_values": 0,
+      "input_sha256": {
+        "examples/VIS_RGB/new_2116.png": "33a69a6f352afa470d5c633e263a8f8a1d7612386ea55ac8f58f74eb078e7b96",
+        "examples/IR/new_2116.png": "e4a236ce11dfc2961087f9b3fecca998f045f363fe701f7725cf4b7da5812590"
+      },
+      "color_pixel_sha256": "730f8dfbfd5ecb50c824fe28bf38664ae49da5400999c193e089715d6eebf2e6",
+      "gray_pixel_sha256": "d3440602b484f0046ffd782f16baadae9ca76d9babaa733e70f4a9a32bbc4c5c",
+      "fraction_color_at_zero": 0.010465744318417881,
+      "fraction_color_at_255": 0.0,
+      "gray_max_abs_pixel_error": 0
+    },
+    {
+      "pair": "0007_72EBS9C_1",
+      "size": [
+        166,
+        977
+      ],
+      "source_seconds": 5.499229699998978,
+      "adapted_metadata": {
+        "implementation": "PRCV IDRNet with VFC and full multi-manifold attention",
+        "weights_name": "model.pth",
+        "weights_sha256": "eb430bf79a58a5c9987e6d2ce6dddf54c5fea7e281a78e7cdcd95b721982551d",
+        "config_sha256": "42b281bd9dba2f1a4f1f53f4c471cf3ebf6a755d30d633ebc5d5e3c1a74fe76d",
+        "model_config": {
+          "base_channels": 32,
+          "flow_channels": 64,
+          "mma_embed_dim": 64,
+          "mma_heads": 4,
+          "mma_window_size": 64,
+          "mma_patch_size": 4,
+          "fusion_blocks": 2,
+          "vfc_enabled": true,
+          "vfc_grid_size": 16,
+          "vfc_search_radius": 4,
+          "vfc_kernel_sigma": 32.0,
+          "vfc_max_disp": 3.0,
+          "vfc_iters": 3,
+          "vfc_topk": 128
+        },
+        "device": "cpu",
+        "torch_threads": 2,
+        "window_batch": 4,
+        "attention_mode": "full",
+        "input_color_order": "RGB",
+        "infrared_conversion": "Pillow RGB to L; grayscale unchanged",
+        "input_normalization": "float32 divided by 255",
+        "output_quantization": "clip to [0, 1], multiply by 255, truncate to uint8",
+        "output_gray_conversion": "Pillow RGB to L of final color",
+        "registration": "Source VFC infrared displacement; applied affine is identity; learned raw flow and stroke refinement flow are zero in this implementation",
+        "external_mask": false,
+        "tf32": false,
+        "seconds": 5.477040000012494,
+        "flow_mean_pixels": 3.7246901988983154,
+        "flow_p95_pixels": 4.242640495300293,
+        "flow_max_abs_component_pixels": 3.0
+      },
+      "max_abs_pixel_error": 0,
+      "different_channel_values": 0,
+      "input_sha256": {
+        "examples/VIS_RGB/0007_72EBS9C_1.png": "c36d6288b8ec3a0a911e4dd55205d99965685ea844118c0f02ba65b167b1d5e4",
+        "examples/IR/0007_72EBS9C_1.png": "875ace92dde5697e2984708014c6e764016070dde19ff25f64a9a0613a6a82c2"
+      },
+      "color_pixel_sha256": "33f9c3071168d9655c4b74d2b3d47ce62d6947468dbeffc62786b7ea58db8383",
+      "gray_pixel_sha256": "f61216294da65710321cb5783b64aee678dcd95e6ae62c4278471f40c213ab2b",
+      "fraction_color_at_zero": 0.011877602528846194,
+      "fraction_color_at_255": 0.0,
+      "gray_max_abs_pixel_error": 0
+    }
+  ],
+  "contract_tests": {
+    "passed": 30,
+    "seconds": 3.43,
+    "weights": "synthetic random checkpoint using the full source architecture; not a quality evaluation"
+  },
+  "adaptations": [
+    "Relative package imports and formatting/type spelling",
+    "Full attention fixed internally, matching source infer.py MMA_MODE=full without process environment mutation",
+    "Repeated source output-map keys retain their last values, matching Python semantics",
+    "Two unused local names renamed with underscore; computations preserved",
+    "Window chunk zip strict=True after existing batch-count equality guard",
+    "Tensor-only strict checkpoint loading plus finite-check validation",
+    "Output gray added as Pillow L of final color; original RGB truncation preserved",
+    "Thread and TF32 settings restored after inference"
+  ],
+  "visual_inspection": "Both final-source sample montages inspected. Material silhouette and visible brown chroma preserved; strokes and fine texture darker in fused RGB. Original and adapted panels visually agree; no independent registration/recognition improvement claim.",
+  "reproducibility_note": "Source parameter requires_grad flags are preserved even under inference_mode: freezing was experimentally observed to change CPU fused float values by at most1.1920928955078125e-7 and two quantized channels by1 on sample0007. Final adapter leaves parameter flags identical to source; both final sample comparisons have zero pixel error. Regression test checks those flags.",
+  "untested": [
+    "CUDA execution",
+    "training or backward pass",
+    "independent registration accuracy",
+    "generalization"
+  ]
+}

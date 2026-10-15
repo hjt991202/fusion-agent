@@ -15,7 +15,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", default="outputs/demo")
     parser.add_argument(
         "--method",
-        choices=["weighted", "wavelet", "both", "icig", "letters", "research", "all"],
+        choices=["weighted", "wavelet", "both", "icig", "letters", "prcv", "research", "all"],
         default="both",
     )
     parser.add_argument(
@@ -28,6 +28,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--threads", type=int, default=2)
     parser.add_argument("--icig-weights")
     parser.add_argument("--letters-weights")
+    parser.add_argument("--prcv-weights")
     parser.add_argument("--visible-y", help="Optional prepared ICIG visible luminance")
     parser.add_argument("--valid-mask", help="Letters observed registration support; nonzero=valid")
     parser.add_argument("--material-mask", help="Letters observed material silhouette")

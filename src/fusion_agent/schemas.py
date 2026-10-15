@@ -4,19 +4,19 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-Method = Literal["weighted", "wavelet", "icig", "letters"]
+Method = Literal["weighted", "wavelet", "icig", "letters", "prcv"]
 
 
 def selected_methods(selection: str) -> list[Method]:
     """Keep the original baseline default while exposing optional learned methods."""
     groups = {
         "both": ["weighted", "wavelet"],
-        "research": ["icig", "letters"],
-        "all": ["weighted", "wavelet", "icig", "letters"],
+        "research": ["icig", "letters", "prcv"],
+        "all": ["weighted", "wavelet", "icig", "letters", "prcv"],
     }
     if selection in groups:
         return groups[selection]
-    if selection not in {"weighted", "wavelet", "icig", "letters"}:
+    if selection not in {"weighted", "wavelet", "icig", "letters", "prcv"}:
         raise ValueError(f"Unknown method: {selection}")
     return [selection]
 

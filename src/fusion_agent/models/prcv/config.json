@@ -1,0 +1,18 @@
+{
+  "model": {
+    "base_channels": 32,
+    "flow_channels": 64,
+    "mma_embed_dim": 64,
+    "mma_heads": 4,
+    "mma_window_size": 64,
+    "mma_patch_size": 4,
+    "fusion_blocks": 2,
+    "vfc_enabled": true,
+    "vfc_grid_size": 16,
+    "vfc_search_radius": 4,
+    "vfc_kernel_sigma": 32.0,
+    "vfc_max_disp": 3.0,
+    "vfc_iters": 3,
+    "vfc_topk": 128
+  }
+}

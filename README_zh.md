@@ -6,12 +6,12 @@
 [全屏打开](https://hjt991202-fusion-agent.static.hf.space/) ·
 [公开样例下载与来源](examples/tno/README.md)
 
-**[▶ 查看 15 对简牍实测对比：ICIG + letters](docs/JIANDU_RESULTS.md)** ·
+**[▶ 查看 15 对简牍实测对比：ICIG + letters + PRCV](docs/JIANDU_RESULTS.md)** ·
 [简牍原图与来源](examples/jiandu/README.md) · [本地模型安装](docs/RESEARCH_METHODS.md)
 
 打开后选择样例，再点击“运行两种浏览器基线”。免费网页版在浏览器内计算，不需要登录或 API
 密钥，也不会把你的图片上传到服务器。支持加权平均与 Haar 小波、四项指标、PNG/报告下载及三对真实 TNO
-图片。在线简牍展示区包含 15 对原图和 ICIG、letters 的**预计算实测结果**；深度模型在本地
+图片。在线简牍展示区包含 15 对原图和 ICIG、letters、PRCV 的**预计算实测结果**；深度模型在本地
 Python 中运行，不提供在线 Agent。下方本地 Gradio 使用 Python，在线版基础算法使用 JavaScript；
 加权平均灰度计算与 Python 一致，Haar 浮点舍入可能相差 1 灰度级。浏览器解码和颜色转换也可能
 与 OpenCV 不同。见 [部署说明与范围](docs/DEPLOYMENT.md)。
@@ -19,7 +19,7 @@ Python 中运行，不提供在线 Agent。下方本地 Gradio 使用 Python，�
 输入一对已配准的可见光和红外图像及任务描述，完成 CPU 融合、指标对比与可追踪报告。
 可选 OpenAI Agents SDK 协调器根据任务选择参数并调用工具；无 API 密钥也能运行完整流程。
 
-![简牍 843 实测：可见光、红外、ICIG 彩色与 letters 彩色及同位置细节](docs/assets/jiandu/jiandu_0843.png)
+![简牍 843 实测：可见光、红外、ICIG、letters、PRCV 彩色结果及同位置细节](docs/assets/jiandu/jiandu_0843.png)
 
 图中是作者所提供权重的实际输出，不代表总体质量结论或独立测试集结果。全部 15 对对比图
 已同步到 GitHub 仓库和 Hugging Face 在线演示。
@@ -33,7 +33,7 @@ Python 中运行，不提供在线 Agent。下方本地 Gradio 使用 Python，�
 
 - 图像解码、格式/位深/通道校验、空白警告、SHA256。
 - 加权平均、一层 Haar 小波融合；灰度 CPU 算法。
-- 接入 ICIG SparseGrFormer v3 和 letters IDRNet/边界细化，支持彩色结果、本地权重与哈希追踪。
+- 接入 ICIG SparseGrFormer v3、letters IDRNet/边界细化和 PRCV IDRNet/VFC，支持彩色结果与权重追踪。
 - 15 对原尺寸简牍 RGB/IR/Y 样例、来源记录和实测对比预览。
 - 信息熵、标准差、平均梯度、空间频率；透明启发式推荐。
 - Pydantic 数据结构、工具计时、独立运行目录、配置、Markdown/JSON 报告。
@@ -48,7 +48,7 @@ flowchart TD
     A --> T[检查输入 / 执行校验后的计划]
     T --> W
     W --> P[校验、灰度化、显式缩放]
-    P --> F[加权平均 / Haar / ICIG / letters]
+    P --> F[加权平均 / Haar / ICIG / letters / PRCV]
     F --> M[指标与启发式比较]
     M --> R[融合图、配置、记录、报告]
 ```
@@ -106,19 +106,21 @@ Linux/macOS 使用 `export OPENAI_API_KEY=...` 和 `export OPENAI_MODEL=...`。
 代码禁用 SDK tracing。任务、文件名、尺寸、哈希、警告和指标可能发给 API；原始像素与绝对
 输出路径不会发送。请勿在任务或文件名中写隐私。本地验收没有进行真实付费 API 调用。
 
-## 运行两种简牍方法
+## 运行三种简牍方法
 
 ```bash
 python -m pip install -e ".[research,ui]"
 python scripts/import_research_weights.py --icig ICIGCode.zip --letters lettersCode.zip
+python scripts/import_research_weights.py --prcv JDFusion.zip
 python -m fusion_agent.cli --visible examples/jiandu/visible/jiandu_0239.png --infrared examples/jiandu/infrared/jiandu_0239.png --visible-y examples/jiandu/visible_y/jiandu_0239.png --method research --output outputs/jiandu
 python scripts/demo_jiandu.py --output outputs/jiandu-demo-NEW
 ```
 
-原压缩包由作者提供，未上传仓库。导入脚本仅提取经过 SHA-256 核对的两个权重到本地
-`weights/`，不会复制完整数据集或压缩包；也可通过 `FUSION_ICIG_WEIGHTS` 和
-`FUSION_LETTERS_WEIGHTS` 指定权重。新克隆用户无需权重即可运行基础算法和查看实测预览。
-`--method icig` / `letters` 分别运行，`research` 比较两种简牍方法，`all` 比较四种方法；
+原压缩包由作者提供，未上传仓库。导入脚本仅提取经过 SHA-256 核对的权重到本地
+`weights/`；也可通过 `FUSION_ICIG_WEIGHTS`、`FUSION_LETTERS_WEIGHTS`、`FUSION_PRCV_WEIGHTS`
+指定权重。PRCV 来自 JDFusion.zip 中的 PRCV_Fusion_submit.zip，支持直接导入外层或内层压缩包。
+方法名称沿用文件夹标识，不代表论文发表状态。新克隆用户无需权重即可运行基础算法和查看预览。
+`--method icig` / `letters` / `prcv` 分别运行，`research` 比较三种简牍方法，`all` 比较五种方法；
 原来的 `both` 仍指加权平均与 Haar。默认 CPU，另支持 `--device cuda`。
 本地 Gradio 也可选择新算法，支持可选的可见光灰度图、有效区域与材料 mask。
 详见 [算法与复现](docs/RESEARCH_METHODS.md)、[15 对样例](examples/jiandu/README.md)、
@@ -131,7 +133,7 @@ python scripts/demo_jiandu.py --output outputs/jiandu-demo-NEW
 二者为可解释基线，不宣称最先进性能。
 
 指标均在保存的 [0,255] 灰度图上计算。ICIG 使用原始融合灰度图，其补充彩色恢复会调整亮度；
-letters 使用最终细化彩色图的 Pillow 灰度。比较时需要考虑这一输出语义差异：
+letters 和 PRCV 使用最终彩色图的 Pillow 灰度。比较时需要考虑这一输出语义差异：
 
 | 指标 | 定义 | 需要参考图？ | 局限 |
 |---|---|---|---|
@@ -195,7 +197,8 @@ CC BY 许可。样例不代表基准测试，训练/测试独立性未确认。�
 当前部署的静态演示只在浏览器内处理图片；若另行部署可选的 Python Space，图片才会发送到服务器。
 
 限制：8-bit 输入；无训练、数据集基准或参考指标；单协调器、启发式推荐。
-letters 保留原模型的学习式流场模块，但实际运行通过不等于配准精度得到验证。
+letters 保留原模型的学习式流场模块；PRCV 保留实际启用的 VFC 位移校正，要求宽高均至少 33 像素。
+实际运行通过不等于配准精度得到验证。
 当前仅验证 CPU，未验证 GPU 或真实付费 API。接口见 [模型接入说明](docs/MODEL_EXTENSION.md)。
 
 [MIT 许可](LICENSE)。感谢 NumPy、OpenCV、PyWavelets、Pydantic、Gradio、OpenAI Agents SDK、

@@ -110,8 +110,8 @@ def build_app():
     with gr.Blocks(title="FusionAgent", analytics_enabled=False, delete_cache=(600, 3600)) as app:
         gr.Markdown(
             "# FusionAgent\nInfrared + visible fusion · Baselines + 简牍研究方法\n"
-            "weighted / wavelet 为基础方法；icig / letters 需安装 research 依赖和本地权重。"
-            "research 比较两种简牍方法，all 比较全部四种。"
+            "weighted / wavelet 为基础方法；icig / letters / prcv 需安装 research 依赖和本地权重。"
+            "research 比较三种简牍方法，all 比较全部五种。"
         )
         if public_demo():
             gr.Markdown(
@@ -121,10 +121,12 @@ def build_app():
         with gr.Row():
             visible = gr.Image(label="Visible image", type="filepath", image_mode=None)
             infrared = gr.Image(label="Infrared image", type="filepath", image_mode=None)
-        task = gr.Textbox(label="Task / 任务", value="Compare both methods and preserve details")
+        task = gr.Textbox(
+            label="Task / 任务", value="Compare selected methods and preserve details"
+        )
         with gr.Row():
             method = gr.Dropdown(
-                ["both", "weighted", "wavelet", "icig", "letters", "research", "all"],
+                ["both", "weighted", "wavelet", "icig", "letters", "prcv", "research", "all"],
                 value="both",
                 label="Methods",
             )

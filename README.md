@@ -8,13 +8,13 @@
 [Direct fullscreen demo](https://hjt991202-fusion-agent.static.hf.space/) ·
 [Public sample images](examples/tno/README.md)
 
-**[▶ View 15 Jiandu comparisons: ICIG + letters](docs/JIANDU_RESULTS.md)** ·
+**[▶ View 15 Jiandu comparisons: ICIG + letters + PRCV](docs/JIANDU_RESULTS.md)** ·
 [Original Jiandu samples](examples/jiandu/README.md) · [Local model setup](docs/RESEARCH_METHODS.md)
 
 Choose a sample, then click **Run fusion**. The free online version processes images entirely in
 your browser; no login, API key or image upload to a server is needed. It offers weighted/Haar baselines,
 four metrics, PNG/report downloads and three real TNO pairs. The live showcase also includes
-15 Jiandu sample pairs and **precomputed** ICIG/letters results; neural inference runs locally
+15 Jiandu sample pairs and **precomputed** ICIG/letters/PRCV results; neural inference runs locally
 through Python. It does not run the optional Agent.
 The local Gradio version below uses Python; the online version uses tested JavaScript kernels.
 Weighted fusion matches the Python grayscale kernel; Haar floating-point rounding can differ
@@ -25,7 +25,7 @@ Upload a registered visible/infrared pair, compare CPU fusion baselines, inspect
 and export a traceable report. An optional OpenAI Agents SDK coordinator interprets task preferences
 and invokes bounded tools. The deterministic path works locally without an API key.
 
-![Measured Jiandu 843: visible, infrared, ICIG color and letters color](docs/assets/jiandu/jiandu_0843.png)
+![Measured Jiandu 843: visible, infrared, ICIG, letters and PRCV color](docs/assets/jiandu/jiandu_0843.png)
 
 Actual outputs from the supplied checkpoints, with shared center crops. This selected example
 does not establish general quality or training/test independence. All 15 comparisons are available
@@ -40,7 +40,7 @@ A UI GIF is not yet recorded; see [capture checklist](docs/DEMO_CHECKLIST.md).
 
 - Image decoding, format/depth/channel checks, blank warnings, source SHA256 hashes.
 - Weighted average and one-level Haar wavelet fusion; grayscale, CPU-only.
-- Optional ICIG SparseGrFormer v3 and letters IDRNet/refinement adapters with color results,
+- Optional ICIG SparseGrFormer v3, letters IDRNet/refinement and PRCV IDRNet/VFC adapters with color results,
   local checkpoint loading and recorded model/configuration hashes.
 - Fifteen original-resolution Jiandu example pairs, source manifests and measured previews.
 - Four no-reference metrics, transparent heuristic comparison, Pydantic contracts.
@@ -56,7 +56,7 @@ flowchart TD
     A --> T[Inspect inputs / Execute validated plan]
     T --> W
     W --> P[Validation / grayscale / explicit resize]
-    P --> F[Weighted / Haar / ICIG / letters]
+    P --> F[Weighted / Haar / ICIG / letters / PRCV]
     F --> M[Measured metrics / heuristic comparison]
     M --> R[PNGs / config / trace / report]
 ```
@@ -65,7 +65,7 @@ The agent receives task text and metadata/statistics, not pixels. Its tools bind
 paths and allowed methods; resizing needs explicit user permission through a flag. It inspects
 before executing at most one experiment, with a six-turn limit. Python generates the authoritative
 report; separate `agent_summary.json` stores model prose that cannot override measured results.
-The two research adapters use supplied pretrained checkpoints; this project does not train models
+The three research adapters use supplied pretrained checkpoints; this project does not train models
 or perform specialist-agent handoffs. Checkpoints remain outside Git.
 
 ## Install
@@ -88,19 +88,22 @@ python -m pip install -e ".[dev,ui,agent]"
 
 For CPU CLI only: `python -m pip install -e .`.
 
-## Run the two Jiandu methods
+## Run the three Jiandu methods
 
 ```bash
 python -m pip install -e ".[research,ui]"
 python scripts/import_research_weights.py --icig ICIGCode.zip --letters lettersCode.zip
+python scripts/import_research_weights.py --prcv JDFusion.zip
 python -m fusion_agent.cli --visible examples/jiandu/visible/jiandu_0239.png --infrared examples/jiandu/infrared/jiandu_0239.png --visible-y examples/jiandu/visible_y/jiandu_0239.png --method research --output outputs/jiandu
 python scripts/demo_jiandu.py --output outputs/jiandu-demo-NEW
 ```
 
 The archives are supplied by the owner and are not distributed here. The import script copies
-only the two hash-checked weights into ignored `weights/`; alternatively set `FUSION_ICIG_WEIGHTS`
-and `FUSION_LETTERS_WEIGHTS`. A fresh clone can run the baselines and inspect the measured previews
-without weights. `--method icig`, `letters`, `research` (both research methods) or `all` are supported.
+only the hash-checked weights into ignored `weights/`; alternatively set `FUSION_ICIG_WEIGHTS`,
+`FUSION_LETTERS_WEIGHTS` and `FUSION_PRCV_WEIGHTS`. The new PRCV checkpoint can be read from the
+outer `JDFusion.zip` or inner `PRCV_Fusion_submit.zip`; its archive name does not establish publication status.
+A fresh clone can run baselines and inspect measured previews without weights. `--method icig`,
+`letters`, `prcv`, `research` (three research methods) or `all` (five methods) are supported.
 `both` continues to mean the original two baselines. CPU is the default; `--device cuda` is optional.
 See [method details and reproduction](docs/RESEARCH_METHODS.md),
 [15-pair source manifest](examples/jiandu/README.md) and
@@ -153,8 +156,8 @@ ties), using one level and symmetric extension. Inverse output is cropped for od
 rounded and clipped. These are interpretable baselines, not state-of-the-art claims.
 
 All statistics use the saved 8-bit grayscale image X in [0,255]. For ICIG this is the raw fused
-gray output; its supplementary color restoration modifies luminance. For letters it is Pillow
-luminance of the final refined color output. These output semantics matter when comparing:
+gray output; its supplementary color restoration modifies luminance. For letters and PRCV it is Pillow
+luminance of the final color output. These output semantics matter when comparing:
 
 | Metric | Definition | Reference? | Limitation |
 |---|---|---|---|
@@ -204,7 +207,7 @@ tests/             IO, algorithms, CLI, SDK and UI tests
 examples/          original synthetic images and generator
 examples/tno/      three attributed CC BY 4.0 public image pairs
 examples/jiandu/   15 owner-authorized RGB/IR/Y examples and source hashes
-src/fusion_agent/models/  optional ICIG and letters inference adapters
+src/fusion_agent/models/  optional ICIG, letters and PRCV inference adapters
 scripts/           audit, experiment, analysis, verification
 .agents/skills/    four executable repository Skills
 docs/              progress, verification, model extension design, demo artifacts
@@ -227,7 +230,8 @@ the optional Python Space configuration would process uploads on a server if sep
 
 Limitations: 8-bit inputs, no training or validated geometric registration/calibration, no dataset
 benchmark, no reference metrics, single coordinator, heuristic recommendation. The letters model
-retains its supplied learned flow stage; successful execution does not validate alignment accuracy.
+retains its supplied learned flow stage; PRCV retains active VFC adjustment and requires images at
+least 33 x 33 pixels. Successful execution does not validate alignment accuracy.
 Training/test independence of the supplied examples is unknown. GPU and live API verification
 are not claimed. See [model integration](docs/MODEL_EXTENSION.md).
 

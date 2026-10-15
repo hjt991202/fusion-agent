@@ -87,9 +87,10 @@ def run_workflow(
                     raise ValueError("Prepared visible luminance must be grayscale and match VIS.")
                 extra["visible_luminance"] = luminance
                 auxiliary["visible_y"] = file_evidence(model_options.visible_y)
-            if method == "letters":
+            if method in {"letters", "prcv"}:
                 if rgb.ndim == 2:
                     rgb = cv2.cvtColor(rgb, cv2.COLOR_GRAY2RGB)
+            if method == "letters":
                 extra["material_mode"] = model_options.material_mode
                 for key in ["valid_mask", "material_mask"]:
                     mask_path = getattr(model_options, key)
@@ -100,7 +101,7 @@ def run_workflow(
                         extra[key] = mask_image > 0
                         auxiliary[key] = file_evidence(mask_path)
             model_ir = i
-            if method == "letters" and infrared_image.ndim == 3:
+            if method in {"letters", "prcv"} and infrared_image.ndim == 3:
                 model_ir = cv2.cvtColor(infrared_image, cv2.COLOR_BGR2RGB)
                 if not pair.same_size:
                     model_ir = cv2.resize(
@@ -169,14 +170,22 @@ def run_workflow(
         + (
             [
                 "Learned inference uses user-supplied checkpoints; no training is performed.",
-                "ICIG uses tiled inference and detail/chroma restoration; letters includes learned "
-                "flow and boundary refinement, not independently validated registration.",
-                "Without a validity mask, letters assumes every input pixel is observed.",
+                "Learned alignment and refinement have not been independently validated "
+                "as geometric registration.",
             ]
             if model_evidence
             else []
         ),
     )
+    if "letters" in model_evidence:
+        report.limitations.append(
+            "Without a validity mask, letters assumes every input pixel is observed."
+        )
+    if "prcv" in model_evidence:
+        report.limitations.append(
+            "PRCV retains active VFC alignment and manifold-guided fusion; "
+            "metrics use Pillow L conversion of its final RGB output."
+        )
     start = time.perf_counter()
     generate_markdown_report(report)
     report.records.append(
@@ -212,11 +221,13 @@ def run_workflow(
             "baseline_grayscale": "OpenCV BGR2GRAY",
             "infrared_grayscale": "OpenCV BGR2GRAY (unchanged for grayscale input)",
             "letters_infrared": "Original grayscale or RGB; model retains its source conversion",
+            "prcv_infrared": "Original grayscale or RGB; model uses Pillow L conversion",
             "resize": "infrared bilinear to visible grid" if not pair.same_size else "none",
             "model_options": model_options.model_dump(
                 exclude={
                     "icig_weights",
                     "letters_weights",
+                    "prcv_weights",
                     "visible_y",
                     "valid_mask",
                     "material_mask",

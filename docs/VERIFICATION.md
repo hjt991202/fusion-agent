@@ -1,5 +1,26 @@
 # Local verification
 
+## PRCV addition — 2026-10-15
+
+- Full project verification: **172 tests passed**, with local ICIG trained-checkpoint tests enabled;
+  Ruff lint/format, CLI, three JavaScript syntax checks and candidate audit passed. The only warning
+  remains the original ICIG torch.qr deprecation. PRCV has 30 additional architecture/adapter tests.
+- PRCV RGB and Pillow L outputs exactly match fresh original infer.py runs on two full-resolution
+  samples: [parity evidence](research-validation/prcv-parity.json). Source modules also match after
+  documented import/type/mode cleanup: [source equivalence](research-validation/prcv-source-equivalence.json).
+- Input audit: all 15 existing RGB/IR pairs valid; source RGB/IR/Y hashes unchanged. No new source
+  examples were published. All 75 gray metric records and all 120 saved output hashes independently
+  verified. Fifteen five-column plates and sample 843 details were visually inspected.
+- Actual local Gradio PRCV callback on sample 517 returned gray/color PNGs, metrics, report and
+  checkpoint trace; metric values and color PNG hash exactly match the final batch. No API call.
+- Wheel build contains all nine PRCV package modules/config files and no weights. The importer
+  accepts the reviewed nested or standalone archive, checks hashes/size bounds and refuses to
+  overwrite a different checkpoint; 11 synthetic-archive tests cover these boundaries.
+- Incremental evidence checks reject source, report, output and timing inconsistencies. The old
+  four-method and new PRCV batches retain separate settings/versions/durations. Static staging
+  has 80 allowlisted files / 24,381,391 bytes. Browser neural output remains precomputed.
+- No CUDA, training, independent registration/recognition-quality benchmark or live paid API test.
+
 ## Jiandu integration — 2026-10-15
 
 - Full project-verification passed: **116 tests passed**, no skips with the local ICIG checkpoint

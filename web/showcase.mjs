@@ -3,6 +3,7 @@ const methods=[
   ['wavelet','Haar 小波','wavelet_fusion'],
   ['icig','ICIG','icig_fusion'],
   ['letters','letters','letters_fusion'],
+  ['prcv','PRCV','prcv_fusion'],
 ];
 const metricKeys=['entropy','standard_deviation','average_gradient','spatial_frequency'];
 
@@ -18,9 +19,19 @@ export function validateShowcase(manifest){
     ids.add(pair.id);
     if(!Number.isSafeInteger(pair.source_id)||pair.source_id<0||
        !Number.isSafeInteger(pair.width)||pair.width<2||
-       !Number.isSafeInteger(pair.height)||pair.height<2||
-       !Number.isFinite(pair.seconds)||pair.seconds<0){
+       !Number.isSafeInteger(pair.height)||pair.height<2){
       throw Error('演示清单包含无效尺寸或耗时。');
+    }
+    if(!Array.isArray(pair.runs)||!pair.runs.length||pair.runs.some(run=>
+      !Number.isFinite(run.seconds)||run.seconds<0||!Array.isArray(run.methods)||!run.methods.length)){
+      throw Error('缺少分批执行时间记录。');
+    }
+    const measured=pair.runs.flatMap(run=>run.methods);
+    if(measured.length!==methods.length||methods.some(([method])=>!measured.includes(method))){
+      throw Error('执行批次与五种方法不一致。');
+    }
+    if(pair.timing_scope==='separate_runs'&&('seconds' in pair||pair.runs.length<2)){
+      throw Error('分批执行不能记录为单次总耗时。');
     }
     if(!Array.isArray(pair.timings))throw Error('缺少实际执行时间记录。');
     for(const [key,,tool] of methods){
@@ -44,7 +55,7 @@ export async function initializeShowcase({loadPair}){
     selected=pair;
     const preview=`showcase/${pair.preview}`;
     $('showcase-preview').src=preview;
-    $('showcase-preview').alt=`简牍 ${pair.source_id}：可见光、红外、ICIG 与 letters 彩色融合及同位置局部细节`;
+    $('showcase-preview').alt=`简牍 ${pair.source_id}：可见光、红外、ICIG、letters 与 PRCV 彩色融合及同位置局部细节`;
     $('showcase-preview-link').href=preview;
     $('showcase-visible').href=`samples/jiandu/visible/${pair.id}.png`;
     $('showcase-infrared').href=`samples/jiandu/infrared/${pair.id}.png`;
@@ -58,7 +69,9 @@ export async function initializeShowcase({loadPair}){
       }
       $('showcase-metrics').append(row);
     }
-    status.textContent=`简牍 ${pair.source_id} · ${pair.width} × ${pair.height} 原始像素 · 该组四方法流程总耗时 ${pair.seconds.toFixed(2)} 秒`;
+    const runs=pair.runs.map(run=>`${run.methods.join('/')}：${run.seconds.toFixed(2)} 秒`).join('；');
+    const scope=pair.timing_scope==='separate_runs'?'分批流程记录':'单次流程记录';
+    status.textContent=`简牍 ${pair.source_id} · ${pair.width} × ${pair.height} 原始像素 · ${scope} · ${runs}`;
     status.classList.remove('error');
     $('showcase-content').hidden=false;
   }

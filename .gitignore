@@ -20,5 +20,7 @@ datasets/
 # User-supplied research archives, full dataset and local checkpoints.
 /ICIGCode.zip
 /lettersCode.zip
+/JDFusion.zip
+/PRCV_Fusion_submit.zip
 /test/
 /weights/
